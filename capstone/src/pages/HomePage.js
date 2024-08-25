@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './HomePage.css'
+
+const FALL_API_ENDPOINT = '/api/fall-status'; // Define API endpoint as a constant
 
 function HomePage() {
   const [fallStatus, setFallStatus] = useState('No recent falls detected');
@@ -8,24 +11,20 @@ function HomePage() {
     name: '',
     phone: '',
   });
-  const [status, setStatus] = useState('Idle'); // Add a state for the status
+  const [status, setStatus] = useState('Idle');
 
-  // Function to fetch fall status and update state
+  // Fetch fall status and update state
   const fetchFallStatus = async () => {
+    /*
     try {
-      const response = await axios.get('/api/fall-status'); // Replace API endpoint
+      const response = await axios.get(FALL_API_ENDPOINT);
       setFallStatus(response.data.status);
       setLastFallTimestamp(response.data.lastFallTimestamp);
-
-      // Update the status based on fall detection
-      if (response.data.status === 'Fall detected') {
-        setStatus('Alarm triggered');
-      } else {
-        setStatus('Idle');
-      }
+      setStatus(response.data.status === 'Fall detected' ? 'Alarm triggered' : 'Idle'); // Update status in a single line
     } catch (error) {
       console.error('Error fetching fall status:', error);
     }
+      */
   };
 
   // Function to update emergency contact information
@@ -39,16 +38,12 @@ function HomePage() {
     // Fetch emergency contact information from backend if needed
   }, []);
 
-  const getFallStatusColor = () => {
-    switch (fallStatus) {
-      case 'Fall detected':
-        return 'fall-detected';
-      default:
-        return 'fall-safe';
-    }
+  const getFallStatusColorClass = () => {
+    // Use className for consistency
+    return fallStatus === 'Fall detected' ? 'fall-detected' : 'fall-safe';
   };
-  
-  const setFallStatusToDetected = () => {
+
+  const simulateFall = () => {
     setFallStatus('Fall detected');
     setLastFallTimestamp(new Date().getTime());
     setStatus('Alarm triggered');
@@ -61,29 +56,32 @@ function HomePage() {
         <p>Your safety is our priority.</p>
       </header>
       <main className="main">
-        <div className={`fall-status ${getFallStatusColor()}`}>
-          <h2>Fall Status: {fallStatus}</h2>
-          {lastFallTimestamp && (
-            <p>Last fall detected on: {new Date(lastFallTimestamp).toLocaleDateString()}</p>
-          )}
+        <div className="fall-status-container" data-testid="fall-status-container"> {/* Add data-testid for testing */}
+          <div className={`fall-status ${getFallStatusColorClass()}`}>
+            <h2>Fall Status: {fallStatus}</h2>
+            {lastFallTimestamp && (
+              <p>Last fall detected on: {new Date(lastFallTimestamp).toLocaleDateString()}</p>
+            )}
+          </div>
         </div>
-        
+
         <div className="emergency-contact">
           <h2>Emergency Contact</h2>
-          <p><strong>Name:</strong> {emergencyContact.name}</p>
-          <p><strong>Phone:</strong> {emergencyContact.phone}</p>
-          <button onClick={() => updateEmergencyContact({ name: 'John Doe', phone: '123-456-7890' })}>Update Contact</button>
+          <p>
+            <strong>Name:</strong> {emergencyContact.name}
+          </p>
+          <p>
+            <strong>Phone:</strong> {emergencyContact.phone}
+          </p>
+          <button onClick={() => updateEmergencyContact({ name: 'John Doe', phone: '123-456-7890' })}>
+            Update Contact
+          </button>
         </div>
-        
+
         <div className="status">
           <h2>Status: {status}</h2>
         </div>
-        <button onClick={setFallStatusToDetected}>Simulate Fall</button>
-        
-        {/* Indicator */}
-        <div className="fall-indicator">
-          <div className={`circle ${getFallStatusColor()}`}></div>
-        </div>
+        <button onClick={simulateFall}>Simulate Fall</button>
       </main>
 
       <footer className="footer">
@@ -92,6 +90,5 @@ function HomePage() {
     </div>
   );
 }
-
 
 export default HomePage;

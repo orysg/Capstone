@@ -1,51 +1,40 @@
 .home-page {
-    /* Overall page styling */
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+}
   
-  .header {
-    /* Header styling */
-  }
+.header {
+  text-align: center;
+  padding: 20px
+}
   
   .main {
-    /* Main content styling */
-  }
-  
-  .fall-status {
-    /* Fall status styling */
-  }
-  
-  .footer {
-    /* Footer styling */
-  }
-  .fall-status {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fall-status-container,
+.emergency-contact,
+.status {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5
+}
+
+.fall-status {
     padding: 1rem;
     border-radius: 5px;
-  }
-
-  .fall-indicator {
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    position: relative;
-  }
+}
   
-  .fall-detected {
-    background-color: #ff4d4d; /* Red color */
-    color: #fff;
-  }
-  
-  .fall-safe {
-    background-color: #90ee90; /* Green color */
-    color: #000;
-  }
-
-  .circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid black; /* Optional border */
-  }
+.fall-detected {
+    background-color: red;
+}
+.fall-safe {
+    background-color: green;
+}
