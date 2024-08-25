@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './HomePage.css';
-import { Link } from 'react-router-dom';
 
 function HomePage() {
   const [fallStatus, setFallStatus] = useState('No recent falls detected');
   const [lastFallTimestamp, setLastFallTimestamp] = useState(null);
   const [status, setStatus] = useState('Idle');
 
+  // Simulated API call to fetch fall status
   const fetchFallStatus = async () => {
     try {
-      setFallStatus('Fall detected'); // For testing
-      setLastFallTimestamp(new Date().getTime());
-      setStatus('Alarm triggered');
+      // Replace with your actual API call
+      // const response = await axios.get('/api/fall-status');
+      // setFallStatus(response.data.status);
+      // setLastFallTimestamp(response.data.lastFallTimestamp);
     } catch (error) {
       console.error('Error fetching fall status:', error);
     }
@@ -22,14 +23,16 @@ function HomePage() {
     fetchFallStatus();
   }, []);
 
-  const getFallStatusColorClass = () => {
-    return fallStatus === 'Fall detected' ? 'fall-detected' : 'fall-safe';
-  };
-
+  // Function to simulate a fall
   const simulateFall = () => {
     setFallStatus('Fall detected');
     setLastFallTimestamp(new Date().getTime());
     setStatus('Alarm triggered');
+  };
+
+  // Determine CSS class based on fall status
+  const getFallStatusColorClass = () => {
+    return fallStatus === 'Fall detected' ? 'fall-detected' : 'fall-safe';
   };
 
   return (

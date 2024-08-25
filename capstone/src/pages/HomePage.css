@@ -19,8 +19,7 @@
   gap: 20px;
 }
 
-.fall-status-container,
-.status {
+.fall-status-container {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -33,13 +32,10 @@
 
 .fall-detected {
   background-color: red;
+  color: white;
 }
 
 .fall-safe {
   background-color: green;
-}
-
-.footer {
-  text-align: center;
-  padding: 10px;
+  color: white;
 }
