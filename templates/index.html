@@ -24,7 +24,16 @@
         <section>
             <h2>Welcome to the Fall Detection System</h2>
             <p>Monitor residents and get real-time alerts on fall events.</p>
-        </section>
+            <h1>Test Cases</h1>
+            <ul>
+                {% for event in data %}
+                    <li>
+                        Case ID: {{ event.case }}<br>
+                        Responders: {{ event.responders }}<br>
+                        Fallen: {{ event.fallen }}
+                    </li>
+                {% endfor %}
+            </ul>
     </main>
     
     <footer>

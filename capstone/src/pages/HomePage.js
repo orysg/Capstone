@@ -10,17 +10,30 @@ function HomePage() {
   // Simulated API call to fetch fall status
   const fetchFallStatus = async () => {
     try {
-      // Replace with your actual API call
-      // const response = await axios.get('/api/fall-status');
-      // setFallStatus(response.data.status);
-      // setLastFallTimestamp(response.data.lastFallTimestamp);
+      const response = await axios.get('http://localhost:5000/api_data');
+      const data = response.data;
+      const latestFall = data.find(event => event.fallen === true);
+      
+      if (latestFall) {
+        setFallStatus('Fall detected');
+        setLastFallTimestamp(new Date().getTime());
+        setStatus('Alarm triggered');
+      } else {
+        setFallStatus('No recent falls detected');
+        setLastFallTimestamp(null);
+        setStatus('Idle');
+      }
     } catch (error) {
       console.error('Error fetching fall status:', error);
     }
   };
 
   useEffect(() => {
-    fetchFallStatus();
+    const interval = setInterval(() => {
+      fetchFallStatus();
+    }, 1000);
+  
+    return () => clearInterval(interval);
   }, []);
 
   // Function to simulate a fall
