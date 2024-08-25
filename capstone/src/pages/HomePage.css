@@ -6,35 +6,40 @@
   margin: 0;
   padding: 20px;
 }
-  
+
 .header {
   text-align: center;
-  padding: 20px
+  padding: 20px;
 }
-  
-  .main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .fall-status-container,
-.emergency-contact,
 .status {
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .fall-status {
-    padding: 1rem;
-    border-radius: 5px;
+  padding: 1rem;
+  border-radius: 5px;
 }
-  
+
 .fall-detected {
-    background-color: red;
+  background-color: red;
 }
+
 .fall-safe {
-    background-color: green;
+  background-color: green;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
 }
