@@ -1,28 +1,83 @@
 import React, { useState } from 'react';
-import './Signup.css'; // Make sure to create this CSS file
+import './Signup.css';
 
 function Signup() {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Submitted:', { name, phone });
+    // Here you can add form validation and submission logic
+    console.log('Sign Up Form Data:', formData);
   };
 
   return (
-    <div className="signup-page">
-      <h1>Sign Up</h1>
+    <div className="signup-container">
+      <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-        </label>
-        <label>
-          Phone:
-          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-        </label>
+        <div>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Phone:</label>
+          <input
+            type="text"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Confirm Password:</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <button type="submit">Sign Up</button>
       </form>
     </div>
