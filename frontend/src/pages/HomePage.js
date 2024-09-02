@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-//import axios from 'axios';
+// import axios from 'axios';
 import './HomePage.css';
 
 function HomePage() {
   const [fallStatus, setFallStatus] = useState('No recent falls detected');
   const [lastFallTimestamp, setLastFallTimestamp] = useState(null);
   const [status, setStatus] = useState('Idle');
+  const [location, setLocation] = useState(null);
 
-  
   // Simulated API call to fetch fall status
   const fetchFallStatus = async () => {
-    /*  Commented because i think api is handled backend now
+    /* Commented because I think the API is handled backend now
     try {
       const response = await axios.get('http://localhost:5000/api_data');
       const data = response.data;
@@ -28,9 +28,8 @@ function HomePage() {
     } catch (error) {
       console.error('Error fetching fall status:', error);
     }
-      */
+    */
   };
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,11 +39,57 @@ function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Function to simulate a fall
+  // Function to simulate a fall and fetch location
   const simulateFall = () => {
     setFallStatus('Fall detected');
     setLastFallTimestamp(new Date().getTime());
     setStatus('Alarm triggered');
+    fetchLocation();
+  };
+
+  // Function to get the current location
+  const fetchLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Function to handle successful location retrieval
+  const showPosition = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    
+    const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
+    setLocation(locationString);
+
+    // Ask user if the detected location is correct
+    if (window.confirm(`Your current location is:\n${locationString}\nIs this correct?`)) {
+      alert("Location confirmed.");
+      // Further actions based on confirmation
+    } else {
+      alert("Location not confirmed. Please try again.");
+      // Handle the case where the user says the location is incorrect
+    }
+  };
+
+  // Function to handle errors during location retrieval
+  const showError = (error) => {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out.");
+        break;
+      case error.UNKNOWN_ERROR:
+        alert("An unknown error occurred.");
+        break;
+    }
   };
 
   // Determine CSS class based on fall status
@@ -71,6 +116,7 @@ function HomePage() {
           <h2>Status: {status}</h2>
         </div>
         <button onClick={simulateFall}>Simulate Fall</button>
+        {location && <p>Current Location: {location}</p>}
       </main>
       <footer className="footer">
         &copy; 2024 FrontGuard
