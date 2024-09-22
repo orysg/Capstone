@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
 import SignIn from './pages/SignIn';  
 import History from './pages/History';
+import FallReport from './pages/FallReport';
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<SignIn />} /> {/* Add route for Sign In page */}
             <Route path="/history" element={<History />} />
+            <Route path="/fall-report" component={FallReport} />
           </Routes>
         </main>
       </div>
