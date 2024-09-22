@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Signup.css';
+import { Link, useNavigate } from 'react-router-dom'; // Use Link for navigation
+import './Signup.css'; 
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ function Signup() {
     password: '',
     confirmPassword: '',
   });
+
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,66 +23,78 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can add form validation and submission logic
     console.log('Sign Up Form Data:', formData);
+
+    // Redirect to Sign In after successful sign-up
+    navigate('/signin');
   };
 
   return (
     <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Phone:</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
+      <div className="signup-box">
+        <h1 className="app-title">Fall Detect<span className="dot">.</span></h1>
+        <h2 className="signup-title">Sign Up</h2>
+        <p className="welcome-text">Create your account and get started.</p>
+
+        <form onSubmit={handleSubmit} className="signup-form">
+          <div className="input-group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="signup-button">Sign Up</button>
+
+          <div className="login-link">
+            <p>Already have an account? <Link to="/signin">Login</Link></p> {/* Link to Sign In */}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,28 +1,42 @@
 .App {
   text-align: center;
+  background-color: #f5f6fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 60px; /* Adjusted to a smaller header */
-  display: flex;
-  flex-direction: row; /* Horizontal alignment */
-  justify-content: center; /* Centering items horizontally */
-  align-items: center; /* Centering items vertically */
-  color: white;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-nav {
+/* Updated navigation bar */
+.nav-bar {
   display: flex;
-  gap: 20px; /* Space between the links */
+  justify-content: space-around;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+  background-color: #ffffff;
 }
 
 .nav-link {
-  color: #61dafb;
   text-decoration: none;
-  font-size: 18px; /* Adjust font size if needed */
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+  color: #6200ee;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }

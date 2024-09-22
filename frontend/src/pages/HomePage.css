@@ -1,41 +1,133 @@
-.home-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  font-family: sans-serif;
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  background-color: #f2f4f7;
+  color: #333;
 }
 
-.header {
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-box {
+  background-color: #8e2de2;
+  color: white;
+  padding: 30px;
   text-align: center;
-  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.main {
-  flex: 1;
+.status-box.fall-safe {
+  background-color: #8e2de2;
+}
+
+.status-box.fall-detected {
+  background-color: #f44336;
+}
+
+.status-box h1 {
+  font-size: 1.5rem;
+}
+
+.status-box p {
+  font-size: 1.2rem;
+}
+
+.report-section {
+  margin-top: 20px;
+}
+
+.report-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.monthly-activity,
+.last-fall {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-activity h2,
+.last-fall h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.activity-legend {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.fall-status-container {
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.activity-legend div {
+  display: flex;
+  align-items: center;
 }
 
-.fall-status {
-  padding: 1rem;
-  border-radius: 5px;
+.activity-legend div span {
+  margin-left: 5px;
+  font-size: 0.9rem;
 }
 
-.fall-detected {
-  background-color: red;
+.legend-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.no-falls {
+  background-color: #4CAF50;
+}
+
+.falls {
+  background-color: #f44336;
+}
+
+.false-alarm {
+  background-color: #FF9800;
+}
+
+.last-fall-details {
+  font-size: 0.9rem;
+}
+
+.last-fall-details p {
+  margin: 5px 0;
+}
+
+.moderate-indicator {
+  color: #FF9800;
+  font-weight: bold;
+}
+
+.simulate-fall-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5722;
   color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
 }
 
-.fall-safe {
-  background-color: green;
-  color: white;
+.simulate-fall-btn:hover {
+  background-color: #e64a19;
 }

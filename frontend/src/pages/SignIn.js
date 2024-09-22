@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './SignIn.css';
+import { Link } from 'react-router-dom';
+import './SignIn.css'; 
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -23,46 +24,52 @@ function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can add form validation and submission logic
     console.log('Sign In Form Data:', formData);
   };
 
   return (
     <div className="signin-container">
-      <h2>Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type={showPassword ? 'text' : 'password'}  // Toggle input type based on showPassword state
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>
+      <div className="signin-box">
+        <h1 className="app-title">Fall Detect<span className="dot">.</span></h1>
+        <h2 className="login-title">Login</h2>
+        <p className="welcome-text">Welcome back. Input your details to pick up where you left off.</p>
+
+        <form onSubmit={handleSubmit} className="signin-form">
+          <div className="input-group">
             <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={handleShowPasswordChange}
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
             />
-            Show Password
-          </label>
-        </div>
-        <button type="submit">Sign In</button>
-      </form>
+          </div>
+          <div className="input-group password-group">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span className="show-password" onClick={handleShowPasswordChange}>
+              👁️
+            </span>
+          </div>
+          <div className="hint-text">Hint here</div>
+          <div className="forgot-password">
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button type="submit" className="login-button">Login</button>
+
+          <div className="signup-link">
+            <p>Don't have an account? <Link to="/signup">Signup</Link></p> {/* Link to Sign Up */}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
