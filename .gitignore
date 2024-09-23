@@ -1,2 +1,7 @@
 /.venv
 **/__pycache__
+**/node_modules
+.devcontainer/devcontainer.env
+.devcontainer/devcontainer.env.production
+!.devcontainer/devcontainer.env.example
+!.devcontainer/devcontainer.env.production.example
