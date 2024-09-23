@@ -9,14 +9,19 @@
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "v20.17.0"
+		},
+		"ghcr.io/itsmechlark/features/postgresql:1": {
+			"version": "1.5.0"
 		}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000, 5000, 5001],
+	"forwardPorts": [3000, 5000, 5001, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --no-cache-dir -r requirements.txt && cd frontend && npm install"
+	"postCreateCommand": "pip3 install --no-cache-dir -r requirements.txt && cd frontend && npm install",
+
+	"runArgs": ["--env-file", ".devcontainer/devcontainer.env"]
 
 	// Configure tool-specific properties.
 	// "customizations": {},
