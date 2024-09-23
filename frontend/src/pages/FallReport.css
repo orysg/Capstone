@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f4f7;
+    color: #333;
+  }
+  
+  .fall-report-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8e2de2;
+  }
+  
+  .fall-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .fall-item {
+    margin-bottom: 20px;
+  }
+  
+  .expand-btn {
+    width: 100%;
+    background-color: #8e2de2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .expand-btn:hover {
+    background-color: #7b25c9;
+  }
+  
+  .fall-details {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+  
+  .fall-details p {
+    margin: 5px 0;
+  }
+  
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+  
+  textarea:focus {
+    border-color: #8e2de2;
+    outline: none;
+  }
+  
+  .report-buttons {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  button {
+    display: inline-block;
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #e64a19;
+  }
+  

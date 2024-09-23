@@ -27,7 +27,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<SignIn />} /> {/* Add route for Sign In page */}
             <Route path="/history" element={<History />} />
-            <Route path="/fall-report" component={FallReport} />
+            <Route path="/fall-report" element={<FallReport />} />
           </Routes>
         </main>
       </div>
