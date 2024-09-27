@@ -1,0 +1,42 @@
+name: front-guard
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    # volumes:
+    #   - ./frontend/build:/usr/share/nginx/html
+  frontend:
+    build:
+      context: ./frontend
+      # target: prod
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    #   - CHOKIDAR_USEPOLLING=true # Enables hot-reloading in environments that need it
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+    #   - DATABASE_URL=postgres://user:password@db:5432/mydb
+  db:
+    image: postgres:16.4-alpine3.20
+    # env_file:
+    #   - ./db/.env
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecret
+      - POSTGRES_USER=myuser
+      - POSTGRES_DB=mydb
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+# volumes:
+#   postgres_data:
+
+# Needs profiles for dev/prod builds
+# Add radar as a service?
