@@ -16,7 +16,10 @@
 	"features": {
 		"ghcr.io/cirolosapio/devcontainers-features/alpine-ohmyzsh:0": {},
 		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {},
-		"ghcr.io/cirolosapio/devcontainers-features/alpine-docker-outside-of-docker:0": {}
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-docker-outside-of-docker:0": {},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-curl:0": {},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-aws-cli:0": {},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-pgsql-client:0": {}
 	},
 
 	"forwardPorts": [
@@ -31,7 +34,8 @@
     "customizations": {
         "vscode": {
           "extensions": [
-            "dbaeumer.vscode-eslint"
+            "dbaeumer.vscode-eslint",
+			"ms-ossdata.vscode-postgresql"
         ]
         }
     }
