@@ -5,26 +5,22 @@
             "label": "Build Docker Images",
             "type": "shell",
             "command": "docker-compose build",
-            "group": "build"
+            "group": "build",
+            "problemMatcher": []
         },
         {
             "label": "Start Docker Containers",
             "type": "shell",
             "command": "docker-compose up -d",
-            "group": "none"
+            "group": "none",
+            "problemMatcher": []
         },
         {
             "label": "Stop Docker Containers",
             "type": "shell",
             "command": "docker-compose down",
-            "group": "none"
-        },
-        // {
-        //     "label": "Run Docker Compose Commands",
-        //     "type": "shell",
-        //     "command": "docker-compose",
-        //     "args": ["<your_command_here>"],
-        //     "group": "none"
-        // }
+            "group": "none",
+            "problemMatcher": []
+        }
     ]
 }
