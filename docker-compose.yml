@@ -8,14 +8,11 @@ services:
     # volumes:
     #   - ./frontend/build:/usr/share/nginx/html
   frontend:
-    build:
-      context: ./frontend
-      # target: prod
+    build: ./frontend
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
-    #   - CHOKIDAR_USEPOLLING=true # Enables hot-reloading in environments that need it
   backend:
     build: ./backend
     ports:
@@ -30,13 +27,22 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=mysecret
       - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mysecret
       - POSTGRES_DB=mydb
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
-# volumes:
-#   postgres_data:
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/init.sh:/docker-entrypoint-initdb.d/init.sql
 
-# Needs profiles for dev/prod builds
-# Add radar as a service?
+# docker exec -it front-guard-db-1 psql -U myuser -d mydb
+
+# Need dev/prod profiles
+# Need radar service
+
+# build:
+#   context: ./frontend
+#   target: prod
+
+# Consider a multi stage build for react -> nginx
+
+# Mount db init script during dev, bake for prod
