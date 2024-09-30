@@ -35,7 +35,7 @@
         "vscode": {
           "extensions": [
             "dbaeumer.vscode-eslint",
-			"ms-ossdata.vscode-postgresql"
+			"ckolkman.vscode-postgres"
         ]
         }
     }
