@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import SignIn from './pages/SignIn';  
 import History from './pages/History';
 import FallReport from './pages/FallReport';
+import TestAPI from './pages/TestAPI'; // Import the TestAPI component
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Link to="/signup" className="nav-link">Sign Up</Link>
             <Link to="/signin" className="nav-link">Sign In</Link> {/* Add Sign In link */}
             <Link to="/history" className="nav-link">History</Link>
+            <Link to="/test-api" className="nav-link">Test API</Link> {/* Add Test API link */}
           </nav>
         </header>
 
@@ -28,6 +30,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} /> {/* Add route for Sign In page */}
             <Route path="/history" element={<History />} />
             <Route path="/fall-report" element={<FallReport />} />
+            <Route path="/test-api" element={<TestAPI />} /> {/* Route for Test API */}
           </Routes>
         </main>
       </div>
