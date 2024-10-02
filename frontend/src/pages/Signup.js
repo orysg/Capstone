@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Use Link for navigation
-import './Signup.css'; 
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './Signup.css';
+
+axios.defaults.timeout = 5000;
 
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Hook for navigation
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,20 +33,59 @@ function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Sign Up Form Data:', formData);
+    const { name, email, password, confirmPassword } = formData;
 
-    // Redirect to Sign In after successful sign-up
-    navigate('/signin');
+    if (!validateEmail(email)) {
+      setError('Invalid email format');
+      return;
+    }
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters, include an uppercase letter, a number, and a special character.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    } 
+    
+    // Clear error message after validation
+    setError('');
+
+    //need to connect /api/admin/signup
+    try {
+      const response = await axios.post('/api/admin/signup', {
+        name,
+        email,
+        password,
+      });
+
+      if (response.status === 201 || response.status === 200) {
+        // Signup successful, navigate to SignIn
+        navigate('/signin');
+      } else {
+        setError('Something went wrong, please try again.');
+      }
+    } catch (error) {
+      if (error.code === 'ECONNABORTED') {
+        console.log('Request timed out');
+        setError('Request timed out. Please try again.');
+      } else {
+        console.log('Another error occurred:', error.message);
+        setError('An error occurred. Please try again.');
+      }
+    }
   };
 
   return (
     <div className="signup-container">
       <div className="signup-box">
         <h1 className="app-title">Fall Detect<span className="dot">.</span></h1>
-        <h2 className="signup-title">Sign Up</h2>
-        <p className="welcome-text">Create your account and get started.</p>
+        <h2 className="signup-title">Admin Sign Up</h2>
+        <p className="welcome-text">Create your company account.</p>
+
+        {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="input-group">
@@ -43,16 +94,6 @@ function Signup() {
               name="name"
               placeholder="Name"
               value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone"
-              value={formData.phone}
               onChange={handleChange}
               required
             />
@@ -91,7 +132,7 @@ function Signup() {
           <button type="submit" className="signup-button">Sign Up</button>
 
           <div className="login-link">
-            <p>Already have an account? <Link to="/signin">Login</Link></p> {/* Link to Sign In */}
+            <p>Already have an account? <Link to="/signin">Login</Link></p>
           </div>
         </form>
       </div>
