@@ -1,14 +1,7 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/python
-
-
-
-// https://containers.dev/implementors/json_reference/
-
 {
 	"name": "front-guard-dev",
 
-	"image": "node:20.17.0-alpine3.20", // "node:20.17.0-alpine3.20"
+	"image": "node:20.17.0-alpine3.20",
 
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/Capstone,type=bind,consistency=cached",
 	"workspaceFolder": "/workspace/Capstone",
@@ -36,16 +29,9 @@
           "extensions": [
             "dbaeumer.vscode-eslint",
 			"ckolkman.vscode-postgres"
-        ]
+        	]
         }
     }
     
-
-	// "postCreateCommand": "",
-
-	// "runArgs": ["--env-file", ".devcontainer/devcontainer.env.example"]
-
-	// "customizations": {},
-
-	// "remoteUser": "root"
+	// "postCreateCommand": "yarn install --cwd frontend && yarn install --cwd backend" // Moved to tasks
 }

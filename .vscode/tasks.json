@@ -4,21 +4,30 @@
         {
             "label": "Build Docker Images",
             "type": "shell",
-            "command": "docker-compose build",
+            "command": "docker compose build",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "Start Docker Containers",
             "type": "shell",
-            "command": "docker-compose up -d",
+            "command": "docker compose up -d",
             "group": "none",
             "problemMatcher": []
         },
         {
             "label": "Stop Docker Containers",
             "type": "shell",
-            "command": "docker-compose down",
+            "command": "docker compose down",
+            "group": "none",
+            "problemMatcher": []
+        },
+
+        // For use in dev container
+        {
+            "label": "Install yarn dependencies",
+            "type": "shell",
+            "command": "yarn install --cwd frontend && yarn install --cwd backend",
             "group": "none",
             "problemMatcher": []
         }

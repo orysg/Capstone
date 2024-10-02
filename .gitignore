@@ -4,6 +4,7 @@
 
 # Node modules
 node_modules/
+yarn.lock
 
 # Database
 db/data
