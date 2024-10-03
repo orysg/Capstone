@@ -1,14 +1,19 @@
-# Use the official Nginx image from Docker Hub
+FROM node:20.17.0-alpine3.20 AS build
+WORKDIR /app
+
+COPY ./frontend/package.json ./frontend/yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY ./frontend ./
+
+RUN yarn build
+
 FROM nginx:1.27.1-alpine3.20
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy the build output from your React app into the Nginx image
-#COPY build/ /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+# Need a conf file
+# Dunno whether backend needs proxy'ing
 
-# Optionally customize Nginx configuration
-#COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80 to the outside once the container has launched
 EXPOSE 80
-
-# Define the command to run your app using CMD which runs when the container is started
 CMD ["nginx", "-g", "daemon off;"]
