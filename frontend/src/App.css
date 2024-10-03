@@ -4,33 +4,47 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .App-header {
   background-color: #fff;
   padding: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); 
+  border-top-left-radius: 15px; /* Rounded corners */
+  border-top-right-radius: 15px; 
 }
 
-/* Updated navigation bar */
 .nav-bar {
   display: flex;
   justify-content: space-around;
-  padding: 15px 0;
-  border-bottom: 1px solid #ddd;
+  align-items: center; /* Center items vertically */
+  padding: 10px 0; /* Reduce padding */
   background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  width: 90%; /* Make it narrower */
+  margin: 0 auto; /* Center it horizontally */
+  left: 0;
+  right: 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
+  border-radius: 15px; /* Fully rounded for a smoother look */
 }
 
 .nav-link {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 16px; /* Slightly smaller font size */
   font-weight: bold;
   color: #555;
   transition: color 0.3s ease;
+  padding: 5px; /* Add padding around text */
+  border-radius: 8px; /* Rounded hover effect */
 }
 
 .nav-link:hover {
-  color: #6200ee;
+  background-color: #6200ee; /* Add hover background */
+  color: #fff; /* Change text color on hover */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 main {
