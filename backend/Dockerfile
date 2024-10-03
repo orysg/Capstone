@@ -2,7 +2,7 @@
 FROM node:20.17.0-alpine3.20
 
 # Set the working directory in the container
-WORKDIR /app/backend
+WORKDIR /app
 
 # Copy package.json and package-lock.json to install dependencies
 COPY package.json .
