@@ -41,6 +41,11 @@
   text-align: left;
 }
 
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .error-message {
   color: #ff4757; 
   background-color: #ffe6e6; 
@@ -50,11 +55,6 @@
   font-size: 14px;
   margin-bottom: 20px;
   text-align: left;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
 }
 
 .input-group {

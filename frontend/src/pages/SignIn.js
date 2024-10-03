@@ -55,7 +55,7 @@ function SignIn() {
               required
             />
             <span className="show-password" onClick={handleShowPasswordChange}>
-              👁️
+              {showPassword ? '🔓' : '🔒'} 
             </span>
           </div>
           <div className="hint-text">Hint here</div>
