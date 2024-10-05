@@ -2,52 +2,40 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Docker Images",
+            "label": "Rebuild Images",
             "type": "shell",
             "command": "docker compose build",
-            "group": "build",
             "problemMatcher": []
         },
         {
-            "label": "Fresh Restart Docker",
+            "label": "Rebuild and Restart",
             "type": "shell",
-            "command": "docker compose up --force-recreate",
-            "group": "build",
-            "dependsOn": "Stop and Remove Containers",
+            "command": "docker compose up -d",
+            "dependsOn": "Rebuild Images",
+            "problemMatcher": []
+        },
+        {
+            "label": "Stop Containers",
+            "type": "shell",
+            "command": "docker compose down",
             "problemMatcher": []
         },
         {
             "label": "Start Docker Containers",
             "type": "shell",
             "command": "docker compose up -d",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "Stop Docker Containers",
-            "type": "shell",
-            "command": "docker compose down",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "Stop and Remove Containers",
-            "type": "shell",
-            "command": "docker-compose down --remove-orphans",
             "problemMatcher": []
         },
         {
             "label": "Install yarn dependencies",
             "type": "shell",
             "command": "yarn install --cwd frontend && yarn install --cwd backend",
-            "group": "none",
             "problemMatcher": []
         },
         {
             "label": "Backend Container CLI",
             "type": "shell",
             "command": "docker exec -it front-guard-backend-1 ash",
-            "group": "none",
             "problemMatcher": []
         }
     ]
