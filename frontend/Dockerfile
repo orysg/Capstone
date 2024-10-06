@@ -1,23 +1,32 @@
-# Use the official Node.js image
-FROM node:20.17.0-alpine3.20
+# Base image
+FROM node:20.17.0-alpine3.20 AS base
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package.json .
-
-# Install dependencies
-RUN yarn install
-
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port that the server will run on
 EXPOSE 3000
 
-# Set environment variables (can also be in .env file)
-# ENV NODE_ENV=production
+# Development image
+FROM base AS dev
 
-# Start the server
+ENV NODE_ENV=development
+
 CMD ["yarn", "start"]
+
+# Production image
+FROM base AS builder
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
+
+COPY . .
+
+RUN yarn build
+
+FROM nginx:1.27.1-alpine3.20 AS prod
+
+COPY --from=builder /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
