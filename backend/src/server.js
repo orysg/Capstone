@@ -12,6 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 
 // Function to generate JWT token
 const generateToken = (user) => {
@@ -43,11 +44,6 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-
-// Protected route example
-app.get('/api/protected', authenticateToken, (req, res) => {
-  res.status(200).json({ message: 'This is a protected route!', user: req.user });
-});
 
 // User registration
 app.post('/api/register', async (req, res) => {
@@ -125,10 +121,10 @@ app.post('/api/login', async (req, res) => {
 
 // New endpoint for generating images
 app.post('/api/generate-images', (req, res) => {
-    const filePath = req.body.filePath; // Get the file path from the request body
-    const scriptPath = path.join(__dirname, 'path_to_your_mcc_files', 'your_script_name'); // Update with the actual path and script name
+    const inputDirectory = req.body.inputDirectory; // Get the input directory from the request body
+    const scriptPath = path.join(__dirname, 'MATLABS', 'apply_generate_pic_to_datasets.m'); // Update with the correct path
 
-    exec(`./${scriptPath} ${filePath}`, (error, stdout, stderr) => {
+    exec(`matlab -batch "apply_generate_pic_to_datasets('${inputDirectory}')"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
             return res.status(500).json({ error: 'Error generating images' });
