@@ -15,9 +15,28 @@
             "problemMatcher": []
         },
         {
+            "label": "Rebuild Images (Production)",
+            "type": "shell",
+            "command": "docker compose -f production.yml build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Rebuild and Restart (Production)",
+            "type": "shell",
+            "command": "docker compose -f production.yml up -d",
+            "dependsOn": "Rebuild Images (Production)",
+            "problemMatcher": []
+        },
+        {
             "label": "Stop Containers",
             "type": "shell",
             "command": "docker compose down",
+            "problemMatcher": []
+        },
+        {
+            "label": "Stop Containers (Production)",
+            "type": "shell",
+            "command": "docker compose -f production.yml down",
             "problemMatcher": []
         },
         {
@@ -27,15 +46,33 @@
             "problemMatcher": []
         },
         {
+            "label": "Start Docker Containers (Production)",
+            "type": "shell",
+            "command": "docker compose -f production.yml up -d",
+            "problemMatcher": []
+        },
+        {
             "label": "Install yarn dependencies",
             "type": "shell",
             "command": "yarn install --cwd frontend && yarn install --cwd backend",
             "problemMatcher": []
         },
         {
+            "label": "Frontend Container CLI",
+            "type": "shell",
+            "command": "docker exec -it front-guard-dev-frontend-1 ash",
+            "problemMatcher": []
+        },
+        {
             "label": "Backend Container CLI",
             "type": "shell",
-            "command": "docker exec -it front-guard-backend-1 ash",
+            "command": "docker exec -it front-guard-dev-backend-1 ash",
+            "problemMatcher": []
+        },
+        {
+            "label": "DB Container CLI",
+            "type": "shell",
+            "command": "docker exec -it front-guard-dev-db-1 psql -U myuser -d mydb",
             "problemMatcher": []
         }
     ]
