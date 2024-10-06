@@ -1,6 +1,6 @@
 # Environment variables
-*/.env
-!*/dev.env
+*.env.*
+!.env.dev
 
 # Node modules
 node_modules/
