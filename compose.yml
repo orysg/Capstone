@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
   backend:
@@ -19,6 +20,7 @@ services:
       - "4000:4000"
     volumes:
       - ./backend:/app
+      - /app/node_modules
     env_file:
       - ./.env/.env.dev
     depends_on:
