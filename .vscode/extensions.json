@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "ckolkman.vscode-postgres",
+        "Postman.postman-for-vscode",
+        "ckolkman.vscode-postgres",
+        "ms-azuretools.vscode-docker"
+    ]
+}
