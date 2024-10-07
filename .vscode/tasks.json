@@ -2,29 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Rebuild Images",
-            "type": "shell",
-            "command": "docker compose build",
-            "problemMatcher": []
-        },
-        {
             "label": "Rebuild and Restart",
             "type": "shell",
-            "command": "docker compose up -d",
-            "dependsOn": "Rebuild Images",
-            "problemMatcher": []
-        },
-        {
-            "label": "Rebuild Images (Production)",
-            "type": "shell",
-            "command": "docker compose -f production.yml build",
+            "command": "docker compose up -d --build",
             "problemMatcher": []
         },
         {
             "label": "Rebuild and Restart (Production)",
             "type": "shell",
-            "command": "docker compose -f production.yml up -d",
-            "dependsOn": "Rebuild Images (Production)",
+            "command": "docker compose -f production.yml up -d --build",
             "problemMatcher": []
         },
         {
