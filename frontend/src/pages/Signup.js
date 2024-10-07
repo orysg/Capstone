@@ -58,7 +58,7 @@ function Signup() {
     setError('');
   
     try {
-      const response = await axios.post('http://backend:4000/api/register', {
+      const response = await axios.post('http://localhost:4000/api/register', {
         email,
         firstName,
         lastName,
