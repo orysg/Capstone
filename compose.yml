@@ -10,11 +10,10 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: yarn install
-    develop:
-      watch: 
-        - path: ./frontend/src
-          action: rebuild
+    # develop:
+    #   watch: 
+    #     - path: ./frontend/src
+    #       action: rebuild
     depends_on:
       - backend
   backend:
@@ -26,11 +25,10 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: yarn install
-    develop:
-      watch: 
-        - path: ./backend/src
-          action: rebuild
+    # develop:
+    #   watch: 
+    #     - path: ./backend/src
+    #       action: rebuild
     env_file:
       - ./.env/.env.dev
     depends_on:
@@ -52,3 +50,5 @@ services:
 # Use secrets instead of environment variables
 
 # Need radar service
+
+# command: sh -c "yarn install && cp yarn.lock /app && yarn start"
