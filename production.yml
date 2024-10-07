@@ -1,7 +1,6 @@
 name: front-guard-prod
 
-# docker compose -f production.yml build
-# docker compose -f production.yml up -d
+# docker compose -f production.yml up -d --build
 
 services:
   frontend:
@@ -12,6 +11,7 @@ services:
       - "80:80"
     depends_on:
       - backend
+    restart: unless-stopped
   backend:
     build:
       context: ./backend
@@ -20,6 +20,7 @@ services:
       - ./.env/.env.prod
     depends_on:
       - db
+    restart: unless-stopped
   db:
     build:
       context: ./db
@@ -28,3 +29,4 @@ services:
       - ./.env/.env.prod
     volumes:
       - ./db/data:/var/lib/postgresql/data
+    restart: unless-stopped
