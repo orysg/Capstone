@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './SignIn.css'; 
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './SignIn.css';
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -9,7 +10,8 @@ function SignIn() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // To display error messages
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); // Use navigate for redirection after login
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,19 +25,13 @@ function SignIn() {
     setShowPassword(!showPassword);
   };
 
-  // Email Regex for validating email format
   const validateEmail = (email) => {
+    // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Password Regex for validating password (minimum 8 characters, at least one letter and one number)
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return passwordRegex.test(password);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
 
@@ -45,16 +41,32 @@ function SignIn() {
       return;
     }
 
-    // Validate password (min 8 characters, at least 1 letter and 1 number)
-    if (!validatePassword(password)) {
-      setErrorMessage('Password format is incorrect');
-      return;
-    }
-
-    // If both email and password are valid, clear the error message
     setErrorMessage('');
-    console.log('Sign In Form Data:', formData);
-    // Proceed with sign-in logic
+
+    try {
+      const response = await axios.post('http://backend:4000/api/login', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Store the token and user data
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+
+        // Redirect to the dashboard or home page
+        navigate('/dashboard');
+      } else {
+        setErrorMessage('Incorrect email or password.');
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        console.log('An error occurred:', error.message);
+        setErrorMessage('An error occurred. Please try again.');
+      }
+    }
   };
 
   return (
@@ -64,8 +76,8 @@ function SignIn() {
         <h2 className="login-title">Login</h2>
         <p className="welcome-text">Welcome back. Input your details to pick up where you left off.</p>
 
-        <form onSubmit={handleSubmit} className="signin-form" noValidate> {/* Disable native validation */}
-          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+        <form onSubmit={handleSubmit} className="signin-form" noValidate>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <div className="input-group">
             <input
               type="email"
@@ -86,10 +98,10 @@ function SignIn() {
               required
             />
             <span className="show-password" onClick={handleShowPasswordChange}>
-              {showPassword ? '🔓' : '🔒'} 
+              {showPassword ? '🔓' : '🔒'}
             </span>
           </div>
-          <div className="hint-text">Hint here</div>
+          <div className="hint-text"></div>
           <div className="forgot-password">
             <a href="#">Forgot password?</a>
           </div>
@@ -97,7 +109,7 @@ function SignIn() {
           <button type="submit" className="login-button">Login</button>
 
           <div className="signup-link">
-            <p>Don't have an account? <Link to="/signup">Signup</Link></p> {/* Link to Sign Up */}
+            <p>Don't have an account? <Link to="/signup">Signup</Link></p>
           </div>
         </form>
       </div>

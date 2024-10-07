@@ -7,7 +7,8 @@ axios.defaults.timeout = 5000;
 
 function Signup() {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',  // Changed from 'name' to 'firstName'
+    lastName: '',   // Added 'lastName' field
     email: '',
     password: '',
     confirmPassword: '',
@@ -16,11 +17,13 @@ function Signup() {
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
+    // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const validatePassword = (password) => {
+    // Password validation regex
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
     return passwordRegex.test(password);
   };
@@ -35,8 +38,10 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
-
+    
+    const { firstName, lastName, email, password, confirmPassword } = formData;
+  
+    // Input validations
     if (!validateEmail(email)) {
       setError('Invalid email format');
       return;
@@ -48,31 +53,35 @@ function Signup() {
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
-    } 
-    
-    // Clear error message after validation
+    }
+  
     setError('');
-
-    //need to connect /api/admin/signup
+  
     try {
-      const response = await axios.post('/api/admin/signup', {
-        name,
+      const response = await axios.post('http://backend:4000/api/register', {
         email,
+        firstName,
+        lastName,
         password,
+        userType: 'Admin',  // Specify the user type
       });
-
+  
       if (response.status === 201 || response.status === 200) {
-        // Signup successful, navigate to SignIn
+        // Handle successful registration
         navigate('/signin');
       } else {
         setError('Something went wrong, please try again.');
       }
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        console.log('Request timed out');
         setError('Request timed out. Please try again.');
+      } else if (error.response) {
+        if (error.response.data && error.response.data.error) {
+          setError(error.response.data.error);  // Display specific server error
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
       } else {
-        console.log('Another error occurred:', error.message);
         setError('An error occurred. Please try again.');
       }
     }
@@ -82,8 +91,8 @@ function Signup() {
     <div className="signup-container">
       <div className="signup-box">
         <h1 className="app-title">Fall Detect<span className="dot">.</span></h1>
-        <h2 className="signup-title">Admin Sign Up</h2>
-        <p className="welcome-text">Create your company account.</p>
+        <h2 className="signup-title">Sign Up</h2>
+        <p className="welcome-text">Create your account.</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -91,9 +100,19 @@ function Signup() {
           <div className="input-group">
             <input
               type="text"
-              name="name"
-              placeholder="Name"
-              value={formData.name}
+              name="firstName"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={formData.lastName}
               onChange={handleChange}
               required
             />

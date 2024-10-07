@@ -1,10 +1,19 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { exec } = require('child_process'); // Import child_process for executing MATLAB scripts
+const path = require('path'); // Import path for handling file paths
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+
+app.use(cors({
+  origin: 'http://localhost:3000',  // Adjust this to your front-end URL
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 

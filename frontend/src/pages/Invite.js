@@ -67,7 +67,7 @@ function Invite() {
             <input
               type="email"
               name="email"
-              placeholder="Nurse Email"
+              placeholder="Carers Email"
               value={formData.email}
               onChange={handleChange}
               required
