@@ -3,10 +3,6 @@ FROM node:20.17.0-alpine3.20 AS base
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-
-RUN yarn install --frozen-lockfile
-
 EXPOSE 4000
 
 # Development image
@@ -18,6 +14,10 @@ CMD ["yarn", "dev"]
 
 # Production image
 FROM base AS prod
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
