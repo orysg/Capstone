@@ -32,4 +32,13 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = { generateToken, authenticateToken };
+const authorizeRoles = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.userType)) {
+      return res.status(403).json({ error: `Forbidden: Requires one of these roles: ${roles.join(', ')}` });
+    }
+    next();
+  };
+};
+
+module.exports = { generateToken, authenticateToken, authorizeRoles };
