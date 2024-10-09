@@ -14,7 +14,8 @@ import {
   } from "@material-tailwind/react";
   import {
     PresentationChartBarIcon,
-    ShoppingBagIcon,
+    BeakerIcon,
+    PhotoIcon,
     UserCircleIcon,
     Cog6ToothIcon,
     InboxIcon,
@@ -26,7 +27,6 @@ import {
     Bars3Icon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
 
    
   export default function DefaultSidebar() {
@@ -64,6 +64,22 @@ import Link from "next/link";
                     History
                 </ListItem>
             </a>
+            <a href="/testAPI">
+                <ListItem>
+                    <ListItemPrefix>
+                        <BeakerIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Test API
+                </ListItem>
+            </a>
+            <a href="/generateImages">
+                <ListItem>
+                    <ListItemPrefix>
+                        <PhotoIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Generate Images
+                </ListItem>
+            </a>
             <ListItem>
                 <ListItemPrefix>
                     <InboxIcon className="h-5 w-5" />
@@ -93,12 +109,15 @@ import Link from "next/link";
                 </ListItemPrefix>
                 Settings
             </ListItem>
+            <a href="/">
             <ListItem>
                 <ListItemPrefix>
                     <PowerIcon className="h-5 w-5" />
                 </ListItemPrefix>
                 Log Out
             </ListItem>
+            </a>
+            
         </>
     );
 

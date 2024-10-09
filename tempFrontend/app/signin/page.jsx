@@ -8,7 +8,6 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { CpuChipIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 function Login1() {
