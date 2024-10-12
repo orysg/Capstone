@@ -1,26 +1,30 @@
-FROM mathworks/matlab:r2023a
+# Use an official Ubuntu base image
+FROM ubuntu:20.04
 
-USER root
+# Set the working directory
+WORKDIR /app
 
+# Install necessary packages
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    wget \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
-USER matlab
+# Copy your compiled MATLAB .exe and Python script into the image
+COPY apply_generate_pic_to_datasets.exe /app/
+COPY app.py /app/
 
-COPY requirements.txt /app/requirements.txt
+# Copy the extracted MATLAB Runtime files into the image
+COPY MATLAB_Runtime_R2024b_win64 /opt/matlab_runtime
 
-RUN pip3 install --no-cache-dir -r /app/requirements.txt
+# Install MATLAB Runtime (Adjust according to the correct installation path)
+RUN /opt/matlab_runtime/install -mode silent -agreeToLicense yes
 
-# ENV MLM_LICENSE_FILE=
-# ENV MATHWORKS_USERNAME_FILE=/run/secrets/mw_username
-# ENV MATHWORKS_PASSWORD_FILE=/run/secrets/mw_password
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip3 install -r requirements.txt
 
-# WORKDIR /app
-
-# COPY . /app
-
-# COPY myscript.m ./
-
-# CMD ["matlab","-batch","myscript"]
+# Command to run your app
+CMD ["python3", "app.py"]

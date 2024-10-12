@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 const GenerateImages = () => {
     const [csvFiles, setCsvFiles] = useState([]);
     const [message, setMessage] = useState('');
+    const [generatedImages, setGeneratedImages] = useState([]);
 
     const handleFolderChange = (event) => {
-        const files = event.target.files; // Get all files
-        const csvFilesArray = Array.from(files).filter(file => file.name.endsWith('.csv')); // Filter for .csv files
-        setCsvFiles(csvFilesArray); // Update state with the filtered CSV files
+        const files = event.target.files;
+        const csvFilesArray = Array.from(files).filter(file => file.name.endsWith('.csv'));
+        setCsvFiles(csvFilesArray);
     };
 
     const handleSubmit = async (event) => {
@@ -17,20 +18,21 @@ const GenerateImages = () => {
             return;
         }
 
-        // Get the path of the first CSV file (you might want to handle multiple CSVs differently)
-        const inputDirectory = csvFiles[0].webkitRelativePath.split('/')[0]; // Get the folder path
+        // Prepare form data
+        const formData = new FormData();
+        csvFiles.forEach((file) => {
+            formData.append('csvFiles', file);
+        });
 
         try {
             const response = await fetch('http://localhost:4000/api/generate-images', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ inputDirectory }),
+                body: formData,
             });
 
             const data = await response.json();
-            setMessage(data.message || 'Images generated successfully.');
+            setMessage(data.message);
+            setGeneratedImages(data.images || []); // Set the generated images paths
         } catch (error) {
             console.error('Error generating images:', error);
             setMessage('Error generating images.');
@@ -45,18 +47,22 @@ const GenerateImages = () => {
                     type="file" 
                     webkitdirectory="true" 
                     directory="true" 
+                    multiple 
                     onChange={handleFolderChange} 
                 />
                 <button type="submit">Generate Images</button>
             </form>
-            {csvFiles.length > 0 && (
-                <ul>
-                    {csvFiles.map((file, index) => (
-                        <li key={index}>{file.name}</li> // Displaying names of the CSV files
-                    ))}
-                </ul>
-            )}
+
             {message && <p>{message}</p>}
+
+            {generatedImages.length > 0 && (
+                <div>
+                    <h2>Generated Images:</h2>
+                    {generatedImages.map((imagePath, index) => (
+                        <img key={index} src={`http://localhost:4000${imagePath}`} alt={`Generated ${index}`} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
