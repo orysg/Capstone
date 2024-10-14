@@ -1,5 +1,6 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation"; 
 import {
   Card,
   Input,
@@ -8,11 +9,33 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import Link from "next/link";
+
+import Image from "next/image";
+import { mockUsers } from "../data/mockUsers"; 
 
 function Login1() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const user = mockUsers.find(
+      (user) => user.email === email && user.password === password
+    );
+    if (user) {
+      // Store user in localStorage for session persistence
+      localStorage.setItem("user", JSON.stringify(user))
+      router.push("/dashboard");
+    } else {
+      setError("Invalid email or password");
+    }
+  };
+
   return (
-      <section className="px-8">
+    <section className="px-8">
       <div className="container mx-auto h-screen grid place-items-center">
         <Card
           shadow={false}
@@ -29,7 +52,7 @@ function Login1() {
           </CardHeader>
           <CardBody>
             <form
-              action="#"
+              onSubmit={handleLogin}  
               className="flex flex-col gap-4 md:mt-12"
             >
               <div>
@@ -53,25 +76,64 @@ function Login1() {
                   labelProps={{
                     className: "hidden",
                   }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}  
                 />
               </div>
-              <Link href="/dashboard">
-                <Button size="lg" className="bg-primaryColour text-night hover:bg-secondaryColour" fullWidth>
-                  continue
-                </Button>
-              </Link>
+              <div>
+                <label htmlFor="password">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="block font-medium mb-2"
+                  >
+                    Password
+                  </Typography>
+                </label>
+                <Input
+                  id="password"
+                  color="gray"
+                  size="lg"
+                  type="password"
+                  name="password"
+                  placeholder="******"
+                  className="w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200"
+                  labelProps={{
+                    className: "hidden",
+                  }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}  // Update password state
+                />
+              </div>
+
+              {error && (
+                <Typography color="red" className="text-center">
+                  {error}
+                </Typography>
+              )}
+
+              <Button
+                size="lg"
+                className="bg-primaryColour text-night hover:bg-secondaryColour"
+                fullWidth
+                type="submit"  // Set submit button
+              >
+                Continue
+              </Button>
+
               <Button
                 variant="outlined"
                 size="lg"
                 className="flex h-12 border-blue-gray-200 items-center justify-center gap-2"
                 fullWidth
               >
-                <img
-                  src={`https://www.material-tailwind.com/logos/logo-google.png`}
+                <Image
+                  src="https://www.material-tailwind.com/logos/logo-google.png"
                   alt="google"
-                  className="h-6 w-6"
-                />{" "}
-                sign in with google
+                  width={24}
+                  height={24}
+                />
+                Sign in with Google
               </Button>
 
               <Typography

@@ -1,5 +1,6 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import "./globals.css";
 import { ThemeProvider } from "@material-tailwind/react";
 import DefaultSidebar from "./components/Sidebar";
@@ -10,6 +11,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const user = localStorage.getItem("user");
+
+    // If user exists, redirect to the dashboard
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   return (
     <html lang="en">

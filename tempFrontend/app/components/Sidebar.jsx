@@ -1,5 +1,6 @@
 'use client';
 import React from "react";
+import { useRouter } from 'next/navigation';
 import {
     Card,
     Drawer,
@@ -44,6 +45,13 @@ import {
 
     const toggleMobileNav = () => {
         setOpenNav(!openNav);
+    };
+
+    // logout
+    const router = useRouter();
+    const handleLogout = () => {
+    localStorage.removeItem("user");
+    router.push("/signin");
     };
 
     const navList = (
@@ -110,7 +118,7 @@ import {
                 Settings
             </ListItem>
             <a href="/">
-            <ListItem>
+            <ListItem onClick={handleLogout} className="cursor-pointer">
                 <ListItemPrefix>
                     <PowerIcon className="h-5 w-5" />
                 </ListItemPrefix>
