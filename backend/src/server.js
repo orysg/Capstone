@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Import path for handling file paths
-const multer = require('multer'); // Import multer for handling file uploads
+// const multer = require('multer'); // Remove multer import
 const imageRoutes = require('./routes/image'); // Import image routes
 const authRoutes = require('./routes/auth'); // Other routes (adjust as needed)
 const fallRoutes = require('./routes/falls'); // Other routes (adjust as needed)
