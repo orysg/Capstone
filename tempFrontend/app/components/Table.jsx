@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import fallHistory from "../data/fallHistory.json";
 import {
   Button,
   Typography,
@@ -51,7 +49,7 @@ const TABS = [
 ]
 function Table() {
 
-  const [fallHistory, setFallHistory] = useState([
+  const [fallHistory] = useState([
     {
       FallID: 1,
       RadarID: 101,

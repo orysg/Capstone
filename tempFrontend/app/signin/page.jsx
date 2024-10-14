@@ -26,8 +26,6 @@ function Login1() {
       (user) => user.email === email && user.password === password
     );
     if (user) {
-      // Store user in localStorage for session persistence
-      localStorage.setItem("user", JSON.stringify(user))
       router.push("/dashboard");
     } else {
       setError("Invalid email or password");
