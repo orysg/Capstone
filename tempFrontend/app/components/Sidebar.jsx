@@ -131,7 +131,7 @@ import {
 
     return (
         <div>
-        <div className="absolute top-0 left-0 m-2">
+        <div className="sticky top-0 left-0 m-2">
             <IconButton variant="text" size="lg" onClick={openDrawer}>
                 {isDrawerOpen ? (
                     <XMarkIcon className="h-8 w-8 stroke-2" />
