@@ -1,0 +1,37 @@
+[
+    {
+        "FallID": 1,
+        "RadarID": 101,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-15T10:00:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 2,
+        "RadarID": 102,
+        "FallType": "Fast",
+        "Timestamp": "2024-09-16T14:30:00",
+        "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 3,
+        "RadarID": 103,
+        "FallType": "False",
+        "Timestamp": "2024-09-17T09:15:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 4,
+        "RadarID": 104,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-18T11:45:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 5,
+        "RadarID": 105,
+        "FallType": "Fast",
+        "Timestamp": "2024-09-19T16:20:00",
+        "ResponseStatus": "Pending"
+    }
+]

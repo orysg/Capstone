@@ -1,15 +1,8 @@
-'use client';
-import React from "react";
-import dynamic from "next/dynamic";
+"use client";
 
-// charts import
-const Chart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
-
-// @material-tailwind/react
+import React, { useEffect, useState } from "react";
+import fallHistory from "../data/fallHistory.json";
 import {
-    Avatar,
   Button,
   Typography,
   Card,
@@ -17,221 +10,120 @@ import {
   CardBody,
   IconButton,
   Input,
+  Chip,
+  Tab,
+  TabsHeader,
+  Tabs,
 } from "@material-tailwind/react";
 
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import {
+  PencilIcon,
+  UserPlusIcon,
   DocumentMagnifyingGlassIcon,
   FlagIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
-
-// deepmerge
-import merge from "deepmerge";
-
-// area chart
-
-function AreaChart({ height = 90, series, colors, options }) {
-  const chartOptions = React.useMemo(
-    () => ({
-      colors,
-      ...merge(
-        {
-          chart: {
-            height: height,
-            type: "area",
-            zoom: {
-              enabled: false,
-            },
-            toolbar: {
-              show: false,
-            },
-          },
-          title: {
-            show: "",
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          legend: {
-            show: false,
-          },
-          markers: {
-            size: 0,
-            strokeWidth: 0,
-            strokeColors: "transparent",
-          },
-          stroke: {
-            curve: "smooth",
-            width: 2,
-          },
-          grid: {
-            show: false,
-            xaxis: {
-              lines: {
-                show: false,
-              },
-            },
-            padding: {
-              top: 0,
-              right: 0,
-              left: 0,
-              bottom: 0,
-            },
-          },
-          tooltip: {
-            theme: "light",
-          },
-          yaxis: {
-            labels: {
-              show: false,
-            },
-          },
-          xaxis: {
-            axisTicks: {
-              show: false,
-            },
-            axisBorder: {
-              show: false,
-            },
-            labels: {
-              show: false,
-            },
-          },
-          fill: {
-            type: "gradient",
-            gradient: {
-              shadeIntensity: 1,
-              opacityFrom: 0.4,
-              opacityTo: 0.6,
-              stops: [0, 100],
-            },
-          },
-        },
-        options ? options : {}
-      ),
-    }),
-    [height, colors, options]
-  );
-
-  return (
-    <Chart type="area" height={height} series={series} options={chartOptions} />
-  );
-}
-
-const TABLE_ROW = [
-    {
-        userImg: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        UserName: "John Doe",
-        Date: "1/1/2024",
-        Severity: "1",
-        TotalUserFalls: "12",
-        color: "green",
-        trend: 4,
-    },
-    {
-        userImg: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        UserName: "John Doe",
-        Date: "1/1/2024",
-        Severity: "2",
-        TotalUserFalls: "12",
-        color: "orange",
-        trend: 4,
-    },
-    {
-        userImg: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        UserName: "John Doe",
-        Date: "1/1/2024",
-        Severity: "3",
-        TotalUserFalls: "12",
-        color: "deep-orange",
-        trend: 4,
-    },
-    {
-        userImg: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        UserName: "John Doe",
-        Date: "1/1/2024",
-        Severity: "4",
-        TotalUserFalls: "12",
-        color: "red",
-        trend: 4,
-    },
-];
-
 const TABLE_HEAD = [
-  {
-    head: "User",
-    customeStyle: "!text-left",
-  },
-  {
-    head: "Date",
-    customeStyle: "text-right",
-  },
-  {
-    head: "Severity",
-    customeStyle: "text-right",
-  },
-  {
-    head: "Total User Falls",
-    customeStyle: "text-right",
-  },
-
-  {
-    head: "Trend",
-    customeStyle: "text-right",
-  },
-  {
-    head: "Actions",
-    customeStyle: "text-right",
-  },
+  { head: "Fall ID" },
+  { head: "Radar ID" },
+  { head: "Fall Type" },
+  { head: "Time" },
+  { head: "Response Status" },
+  { head: "Actions", customeStyle: "text-right" },
 ];
-
+const TABS = [
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "Acknowledged",
+    value: "acknowledged",
+  },
+  {
+    label: "Pending",
+    value: "pending",
+  },
+  {
+    label: "Resolved",
+    value: "resolved",
+  },
+]
 function Table() {
-  return (
 
-        <section className="m-10">
+  const [fallHistory, setFallHistory] = useState([
+    {
+      FallID: 1,
+      RadarID: 101,
+      FallType: "Slow",
+      Timestamp: "2024-09-15T10:00:00",
+      ResponseStatus: "Acknowledged",
+    },
+    {
+      FallID: 2,
+      RadarID: 102,
+      FallType: "Fast",
+      Timestamp: "2024-09-16T10:00:00",
+      ResponseStatus: "Not Responded",
+    },
+    {
+      FallID: 3,
+      RadarID: 103,
+      FallType: "False",
+      Timestamp: "2024-09-17T10:00:00",
+      ResponseStatus: "Acknowledged",
+    },
+  ]);
+
+  const TABLE_ROW = fallHistory.map((fall) => ({
+    fallID: fall.FallID,
+    RadarID: fall.RadarID,
+    type: fall.FallType,
+    Date: new Date(fall.Timestamp).toISOString().split('T')[0],
+    Status: fall.ResponseStatus,
+    color: fall.type === "Fast" ? "red" : "green",
+  }));
+
+  return (
+    <section className="m-10">
       <Card className="h-full w-full">
-        <CardHeader
-          floated={false}
-          shadow={false}
-          className="rounded-none flex flex-wrap gap-4 justify-between mb-4"
-        >
+        <CardHeader floated={false} shadow={false} className="rounded-none flex flex-wrap gap-4 justify-between mb-4">
+          <div className="mb-8 flex items-center justify-between gap-8">
           <div>
-            <Typography variant="h6" color="blue-gray">
-              Recent Falls
+            <Typography variant="h5" color="blue-gray">
+              Recent Fall list
             </Typography>
-            <Typography
-              variant="small"
-              className="text-gray-600 font-normal mt-1"
-            >
-              The most recent falls and  their severity
+            <Typography color="gray" className="mt-1 font-normal">
+              See information about recent falls
             </Typography>
           </div>
-          <div className="flex items-center w-full shrink-0 gap-4 md:w-max">
-            <div className="w-full md:w-72">
-              <Input
-                size="lg"
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-              />
-            </div>
-            <Button
-              variant="outlined"
-              className="flex items-center gap-2"
-            >
-              24h
-              <ChevronDownIcon strokeWidth={3} className="w-3 h-3" />
-            </Button>
+        </div>
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          <Tabs value="all" className="w-full md:w-max">
+            <TabsHeader>
+              {TABS.map(({ label, value }) => (
+                <Tab key={value} value={value}>
+                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                </Tab>
+              ))}
+            </TabsHeader>
+          </Tabs>
+          <div className="w-full md:w-72">
+            <Input
+              label="Search"
+              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+            />
           </div>
+        </div>
         </CardHeader>
         <CardBody className="overflow-scroll !px-0 py-2">
           <table className="w-full min-w-max table-auto">
             <thead>
               <tr>
-                {TABLE_HEAD.map(({ head, customeStyle }) => (
+                {TABLE_HEAD.map(({ head }) => (
                   <th
                     key={head}
-                    className={`border-b border-gray-300 !p-4 pb-8 ${customeStyle}`}
+                    className={`border-b border-gray-300 !p-4 pb-8 `}
                   >
                     <Typography
                       color="blue-gray"
@@ -246,47 +138,41 @@ function Table() {
             </thead>
             <tbody>
               {TABLE_ROW.map(
-                (
-                  {
-                    userImg: user,
-                    UserName,
-                    Date,
-                    Severity,
-                    TotalUserFalls,
-                    color,
-                  },
-                  index
-                ) => {
+                ({ fallID, RadarID, type, Date, Status }, index) => {
                   const isLast = index === TABLE_ROW.length - 1;
-                  const classes = isLast
-                    ? "!p-4"
-                    : "!p-4 border-b border-gray-300";
-                  return (
-                    <tr key={UserName}>
+                  const classes = isLast ? "!p-4" : "!p-4 border-b border-gray-300";
+                  
+                    return (
+                    <tr key={fallID}>
                       <td className={classes}>
-                        <div className="flex items-center gap-4 text-left">
-                            <Avatar
-                            src={user}
-                            alt={UserName}
-                            size="sm" // size can be set to "sm", "md", "lg", or "xl"
-                            className="border rounded-md"
-                            />
-                          <div>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="!font-semibold"
-                            >
-                              {UserName}
-                            </Typography>
-                            
-                          </div>
+                        <Typography
+                          variant="small"
+                          className="!font-normal text-gray-600 text-center"
+                        >
+                          {fallID}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="!font-normal text-gray-600 text-center"
+                        >
+                          {RadarID}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <div className="flex justify-center items-center">
+                          <Chip
+                            size="sm"
+                            variant="ghost"
+                            value={type}
+                            color={type === "False" ? "green" : type === "Slow" ? "amber": "red"}/>
                         </div>
                       </td>
                       <td className={classes}>
                         <Typography
                           variant="small"
-                          className="!font-normal text-gray-600 text-right"
+                          className="!font-normal text-gray-600 text-center"
                         >
                           {Date}
                         </Typography>
@@ -294,36 +180,10 @@ function Table() {
                       <td className={classes}>
                         <Typography
                           variant="small"
-                          color={color}
-                          className="!font-bold text-right"
+                          className="!font-bold text-center"
                         >
-                          {Severity}
+                          {Status}
                         </Typography>
-                      </td>
-                      <td className={classes}>
-                        <Typography
-                          variant="small"
-                          className="!font-normal text-gray-600 text-right"
-                        >
-                          {TotalUserFalls}
-                        </Typography>
-                      </td>
-                      
-                      <td className={classes}>
-                        <div className="max-w-[12rem] ml-auto h-12 -translate-y-6">
-                          <AreaChart
-                            colors={["#2196F373"]}
-                            options={{}}
-                            series={[
-                              {
-                                name: "2023 Falls",
-                                data: [
-                                  1, 3, 0, 1, 2, 3, 0, 1, 2,
-                                ],
-                              },
-                            ]}
-                          />
-                        </div>
                       </td>
                       <td className={classes}>
                         <div className="flex justify-end gap-4">
@@ -337,14 +197,13 @@ function Table() {
                       </td>
                     </tr>
                   );
-                }
+                },
               )}
             </tbody>
           </table>
         </CardBody>
       </Card>
     </section>
-    
   );
 }
 
