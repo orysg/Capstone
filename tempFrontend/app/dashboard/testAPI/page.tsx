@@ -1,4 +1,4 @@
-import TestAPI from "../components/TestAPI"
+import TestAPI from "../../components/TestAPI"
 function testAPIPage(){
     return(
         <section className="container mx-auto py-20 px-8">

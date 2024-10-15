@@ -64,7 +64,7 @@ import {
                     Dashboard
                 </ListItem>
             </a>
-            <a href="/history">
+            <a href="/dashboard/history">
                 <ListItem>
                     <ListItemPrefix>
                         <CalendarIcon className="h-5 w-5" />
@@ -72,7 +72,7 @@ import {
                     History
                 </ListItem>
             </a>
-            <a href="/testAPI">
+            <a href="/dashboard/testAPI">
                 <ListItem>
                     <ListItemPrefix>
                         <BeakerIcon className="h-5 w-5" />
@@ -80,7 +80,7 @@ import {
                     Test API
                 </ListItem>
             </a>
-            <a href="/generateImages">
+            <a href="/dashboard/generateImages">
                 <ListItem>
                     <ListItemPrefix>
                         <PhotoIcon className="h-5 w-5" />
@@ -97,7 +97,7 @@ import {
                     <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
                 </ListItemSuffix>
             </ListItem>
-            <a href="/report">
+            <a href="/dashboard/report">
                 <ListItem>
                     <ListItemPrefix>
                         <DocumentIcon className="h-5 w-5" />
