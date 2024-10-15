@@ -1,9 +1,8 @@
-import Image from "next/image";
-import  HeroSection16  from './components/Hero'
-import NavbarDefault from './components/Navbar'
-import Footer16 from './components/Footer'
-import TeamCard from './components/TeamCard'
-import FeaturesSection from './components/Features'
+import  HeroSection16  from './components/landing/Hero'
+import NavbarDefault from './components/landing/Navbar'
+import Footer16 from './components/landing/Footer'
+import TeamCard from './components/landing/TeamCard'
+import FeaturesSection from './components/landing/Features'
 export default function Home() {
   return (
     <div>

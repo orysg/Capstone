@@ -24,10 +24,10 @@ export default function FallAlert() {
     return () => clearInterval(intervalId);
   }, []);
   return (
-    <div className="ps-24 pr-24 pt-3 flex justify-center items-center">
+    <div className="flex justify-center items-center max-w-full">
       <Alert
         color={fallDetected ? "red" : "green"}
-        className="transition-all duration-300"
+        className="transition-all duration-300 max-w-fit"
       >
         {fallDetected
           ? "Fall detected! Please check immediately."

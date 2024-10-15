@@ -58,7 +58,7 @@ const data = [
 
 function MetricsCard1() {
   return (
-    <section className="container mx-auto py-20 px-8">
+    <section className="container mx-auto max-w-screen-xl py-20 px-8">
       <div className="flex justify-between md:items-center">
         <div>
           <Typography className="font-bold">Current Status</Typography>
@@ -92,7 +92,7 @@ function MetricsCard1() {
           </Menu>
         </div>
       </div>
-      <div className="mt-6 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 items-center md:gap-2.5 gap-4">
+      <div className="mt-6 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 items-center md:gap-2.5 gap-4 ">
         {data.map((props, key) => (
           <MetricsCard key={key} {...(props)} />
         ))}

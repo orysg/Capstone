@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Typography,
   Card,
   CardHeader,
@@ -9,138 +8,143 @@ import {
   IconButton,
   Input,
   Chip,
-  Tab,
-  TabsHeader,
-  Tabs,
 } from "@material-tailwind/react";
-
 import {
-  PencilIcon,
-  UserPlusIcon,
   DocumentMagnifyingGlassIcon,
   FlagIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
-const TABLE_HEAD = [
-  { head: "Fall ID" },
-  { head: "Radar ID" },
-  { head: "Fall Type" },
-  { head: "Time" },
-  { head: "Response Status" },
-  { head: "Actions", customeStyle: "text-right" },
-];
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Acknowledged",
-    value: "acknowledged",
-  },
-  {
-    label: "Pending",
-    value: "pending",
-  },
-  {
-    label: "Resolved",
-    value: "resolved",
-  },
-]
+import { Pagination } from "./Pagination";
+
 function Table() {
+  const [fallHistory, setFallHistory] = useState([]);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(fallHistory.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedHistory = fallHistory.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
-  const [fallHistory] = useState([
-    {
-      FallID: 1,
-      RadarID: 101,
-      FallType: "Slow",
-      Timestamp: "2024-09-15T10:00:00",
-      ResponseStatus: "Acknowledged",
-    },
-    {
-      FallID: 2,
-      RadarID: 102,
-      FallType: "Fast",
-      Timestamp: "2024-09-16T10:00:00",
-      ResponseStatus: "Not Responded",
-    },
-    {
-      FallID: 3,
-      RadarID: 103,
-      FallType: "False",
-      Timestamp: "2024-09-17T10:00:00",
-      ResponseStatus: "Acknowledged",
-    },
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/fetchFallData");
+        const data = await response.json();
+        setFallHistory(data);
+      } catch (error) {
+        console.error("Error fetching fall history data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const TABLE_ROW = fallHistory.map((fall) => ({
+  const TABLE_ROW = paginatedHistory.map((fall) => ({
     fallID: fall.FallID,
     RadarID: fall.RadarID,
     type: fall.FallType,
-    Date: new Date(fall.Timestamp).toISOString().split('T')[0],
+    Date: new Date(fall.Timestamp).toISOString().split("T")[0],
     Status: fall.ResponseStatus,
     color: fall.type === "Fast" ? "red" : "green",
   }));
 
   return (
     <section className="m-10">
-      <Card className="h-full w-full">
-        <CardHeader floated={false} shadow={false} className="rounded-none flex flex-wrap gap-4 justify-between mb-4">
+      <Card className="h-full mx-auto max-w-screen">
+        <CardHeader
+          floated={false}
+          shadow={false}
+          className="rounded-none flex flex-wrap gap-4 justify-between mb-4"
+        >
           <div className="mb-8 flex items-center justify-between gap-8">
-          <div>
-            <Typography variant="h5" color="blue-gray">
-              Recent Fall list
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-              See information about recent falls
-            </Typography>
+            <div>
+              <Typography variant="h5" color="blue-gray">
+                Recent Fall list
+              </Typography>
+              <Typography color="gray" className="mt-1 font-normal">
+                See information about recent falls
+              </Typography>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
-            </TabsHeader>
-          </Tabs>
-          <div className="w-full md:w-72">
-            <Input
-              label="Search"
-              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-            />
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="w-full md:w-72">
+              <Input
+                label="Search"
+                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+              />
+            </div>
           </div>
-        </div>
         </CardHeader>
-        <CardBody className="overflow-scroll !px-0 py-2">
+        <CardBody className="overflow-x-auto !px-0 py-2">
           <table className="w-full min-w-max table-auto">
             <thead>
               <tr>
-                {TABLE_HEAD.map(({ head }) => (
-                  <th
-                    key={head}
-                    className={`border-b border-gray-300 !p-4 pb-8 `}
+                <th className="border-b border-gray-300 !p-4 pb-8">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
                   >
-                    <Typography
-                      color="blue-gray"
-                      variant="small"
-                      className="!font-bold"
-                    >
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
+                    Fall ID
+                  </Typography>
+                </th>
+                <th className="border-b border-gray-300 !p-4 pb-8 hidden md:table-cell">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
+                  >
+                    Radar ID
+                  </Typography>
+                </th>
+                <th className="border-b border-gray-300 !p-4 pb-8">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
+                  >
+                    Type
+                  </Typography>
+                </th>
+                <th className="border-b border-gray-300 !p-4 pb-8">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
+                  >
+                    Date
+                  </Typography>
+                </th>
+                <th className="border-b border-gray-300 !p-4 pb-8">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
+                  >
+                    Status
+                  </Typography>
+                </th>
+                <th className="border-b border-gray-300 !p-4 pb-8">
+                  <Typography
+                    color="blue-gray"
+                    variant="small"
+                    className="!font-bold"
+                  >
+                    Actions
+                  </Typography>
+                </th>
               </tr>
             </thead>
             <tbody>
               {TABLE_ROW.map(
                 ({ fallID, RadarID, type, Date, Status }, index) => {
                   const isLast = index === TABLE_ROW.length - 1;
-                  const classes = isLast ? "!p-4" : "!p-4 border-b border-gray-300";
-                  
-                    return (
+                  const classes = isLast
+                    ? "!p-4"
+                    : "!p-4 border-b border-gray-300";
+
+                  return (
                     <tr key={fallID}>
                       <td className={classes}>
                         <Typography
@@ -150,7 +154,7 @@ function Table() {
                           {fallID}
                         </Typography>
                       </td>
-                      <td className={classes}>
+                      <td className={"${classes} hidden md:table-cell"}>
                         <Typography
                           variant="small"
                           className="!font-normal text-gray-600 text-center"
@@ -164,7 +168,14 @@ function Table() {
                             size="sm"
                             variant="ghost"
                             value={type}
-                            color={type === "False" ? "green" : type === "Slow" ? "amber": "red"}/>
+                            color={
+                              type === "False"
+                                ? "green"
+                                : type === "Slow"
+                                ? "amber"
+                                : "red"
+                            }
+                          />
                         </div>
                       </td>
                       <td className={classes}>
@@ -195,10 +206,17 @@ function Table() {
                       </td>
                     </tr>
                   );
-                },
+                }
               )}
             </tbody>
           </table>
+          <div className="flex justify-center my-4">
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+            />
+          </div>
         </CardBody>
       </Card>
     </section>

@@ -33,5 +33,110 @@
         "FallType": "Fast",
         "Timestamp": "2024-09-19T16:20:00",
         "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 6,
+        "RadarID": 106,
+        "FallType": "False",
+        "Timestamp": "2024-09-20T08:30:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 7,
+        "RadarID": 107,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-21T12:00:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 8,
+        "RadarID": 108,
+        "FallType": "Fast",
+        "Timestamp": "2024-09-22T17:10:00",
+        "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 9,
+        "RadarID": 109,
+        "FallType": "False",
+        "Timestamp": "2024-09-23T10:55:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 10,
+        "RadarID": 110,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-24T14:45:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 11,
+        "RadarID": 111,
+        "FallType": "Fast",
+        "Timestamp": "2024-09-25T09:30:00",
+        "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 12,
+        "RadarID": 112,
+        "FallType": "False",
+        "Timestamp": "2024-09-26T13:20:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 13,
+        "RadarID": 113,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-27T15:05:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 14,
+        "RadarID": 114,
+        "FallType": "Fast",
+        "Timestamp": "2024-09-28T11:15:00",
+        "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 15,
+        "RadarID": 115,
+        "FallType": "False",
+        "Timestamp": "2024-09-29T09:50:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 16,
+        "RadarID": 116,
+        "FallType": "Slow",
+        "Timestamp": "2024-09-30T10:40:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 17,
+        "RadarID": 117,
+        "FallType": "Fast",
+        "Timestamp": "2024-10-01T12:30:00",
+        "ResponseStatus": "Pending"
+    },
+    {
+        "FallID": 18,
+        "RadarID": 118,
+        "FallType": "False",
+        "Timestamp": "2024-10-02T14:20:00",
+        "ResponseStatus": "Resolved"
+    },
+    {
+        "FallID": 19,
+        "RadarID": 119,
+        "FallType": "Slow",
+        "Timestamp": "2024-10-03T09:10:00",
+        "ResponseStatus": "Acknowledged"
+    },
+    {
+        "FallID": 20,
+        "RadarID": 120,
+        "FallType": "Fast",
+        "Timestamp": "2024-10-04T11:00:00",
+        "ResponseStatus": "Pending"
     }
 ]

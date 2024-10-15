@@ -48,7 +48,7 @@ const GenerateImages = () => {
     };
     return(
         <div>
-        <Card  className="w-full max-w-[24rem]" color="transparent" shadow={false}>
+        <Card   color="transparent" shadow={false}>
         <CardHeader color='transparent' floated={false} shadow={false} className="m-0 grid place-items-center px-4 py-8 text-center">
         <Typography variant="h5" color="blue-gray">
           Generate Images
