@@ -38,7 +38,6 @@ export default function DefaultSidebar() {
   // logout
   const router = useRouter();
   const handleLogout = () => {
-    localStorage.removeItem("user");
     router.push("/signin");
   };
 

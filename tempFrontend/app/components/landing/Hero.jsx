@@ -2,14 +2,11 @@
 import React from "react";
 import {
   Button,
-  IconButton,
   Typography,
   Input,
 } from "@material-tailwind/react";
 
 function HeroSection16() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen((cur) => !cur);
 
   React.useEffect(() => {
     window.addEventListener(

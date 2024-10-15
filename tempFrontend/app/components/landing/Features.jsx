@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Card, CardBody, Typography, Avatar } from "@material-tailwind/react";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
 import {
   ClockIcon,
   BellAlertIcon,
