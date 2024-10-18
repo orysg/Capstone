@@ -22,7 +22,8 @@ function App() {
             <Link to="/signin" className="nav-link">Sign In</Link>
             <Link to="/history" className="nav-link">History</Link>
             <Link to="/test-api" className="nav-link">Test API</Link>
-            <Link to="/generate-images" className="nav-link">Generate Images</Link> {/* Add link to Generate Images page */}
+            <Link to="/add-radar" className="nav-link">add-radar</Link>
+          
           </nav>
         </header>
 
@@ -36,7 +37,7 @@ function App() {
             <Route path="/history" element={<History />} />
             <Route path="/fall-report" element={<FallReport />} />
             <Route path="/test-api" element={<TestAPI />} />
-            <Route path="/add-radar" element={<AddRadar />} /> {/* Route for Generate Images */}
+            <Route path="/add-radar" element={<AddRadar />} />
           </Routes>
         </main>
       </div>
