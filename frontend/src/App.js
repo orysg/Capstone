@@ -8,7 +8,7 @@ import FallReport from './pages/FallReport';
 import WelcomePage from './pages/WelcomePage';
 import LearnMore from './pages/LearnMore';
 import TestAPI from './pages/TestAPI'; // Import the TestAPI component
-import GenerateImages from './pages/GenerateImages'; // Import the new component
+import AddRadar from './pages/AddRadar'; // Import the new component
 import './App.css';
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
             <Route path="/history" element={<History />} />
             <Route path="/fall-report" element={<FallReport />} />
             <Route path="/test-api" element={<TestAPI />} />
-            <Route path="/generate-images" element={<GenerateImages />} /> {/* Route for Generate Images */}
+            <Route path="/add-radar" element={<AddRadar />} /> {/* Route for Generate Images */}
           </Routes>
         </main>
       </div>
