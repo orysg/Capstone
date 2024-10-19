@@ -44,6 +44,11 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  mock_api:
+    build:
+      context: ./mock-radar
+    ports:
+      - "5000:5000"
 
 # Add yarn install to dev build of frontend/backend to sync any dependancy changes
 

@@ -30,3 +30,9 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
     restart: unless-stopped
+  mock_api: # This is not exactly a production build
+    build:
+      context: ./mock-radar
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
