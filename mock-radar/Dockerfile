@@ -12,4 +12,4 @@ COPY *.py .
 
 EXPOSE 5000
 
-CMD ["python", "mock_api.py"]
+CMD ["python", "app.py"]
