@@ -30,9 +30,13 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
     restart: unless-stopped
-  mock_api: # This is not exactly a production build
+  mock_api: # Should also use nginx but would require another container
+            # But shouldn't bother as it should nearly be in its own repository
+            # Could possibly host through the frontends nginx server though
     build:
       context: ./mock-radar
     ports:
       - "5000:5000"
+    environment:
+      - FLASK_ENV=prod
     restart: unless-stopped

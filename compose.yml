@@ -47,6 +47,8 @@ services:
   mock_api:
     build:
       context: ./mock-radar
+    environment:
+      - FLASK_ENV=dev
     ports:
       - "5000:5000"
 
