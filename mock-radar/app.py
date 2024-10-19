@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, render_template, request
+import os
 import copy
 
 app = Flask(__name__, template_folder='templates')
@@ -74,4 +75,8 @@ def reset_template():
     return f"Reset template '{TEMPLATE_ID}'", 200
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(
+        debug=os.environ.get("FLASK_ENV") == "dev",
+        host="0.0.0.0",
+        port=5000
+    )
