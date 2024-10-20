@@ -27,7 +27,7 @@ const TestAPI = () => {
           calculateFallStatus(newNumbers);
           setIsGenerating(false); // Reset generating state
         }
-      }, index * 1000); // 1000ms delay for each number
+      }, index * 100); // 1000ms delay for each number
     });
   };
 

@@ -9,14 +9,12 @@ import {
   ListItem,
   ListItemPrefix,
   ListItemSuffix,
-  MobileNav,
   Chip,
   IconButton,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
   BeakerIcon,
-  PhotoIcon,
   UserCircleIcon,
   Cog6ToothIcon,
   InboxIcon,
@@ -27,11 +25,7 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function DefaultSidebar() {
-  const [open, setOpen] = React.useState(0);
-  const [openAlert, setOpenAlert] = React.useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-  const [openNav, setOpenNav] = React.useState(false);
-
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
 
@@ -65,14 +59,6 @@ export default function DefaultSidebar() {
             <BeakerIcon className="h-5 w-5" />
           </ListItemPrefix>
           Test API
-        </ListItem>
-      </a>
-      <a href="/dashboard/generateImages">
-        <ListItem>
-          <ListItemPrefix>
-            <PhotoIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Generate Images
         </ListItem>
       </a>
       <ListItem>
@@ -122,7 +108,7 @@ export default function DefaultSidebar() {
   );
 
   return (
-    <div className="w-12">
+    <div className="fixed top-4 left-4 z-50 w-12 ">
       <div>
         <IconButton variant="text" size="lg" onClick={openDrawer}>
           {isDrawerOpen ? (
@@ -132,7 +118,6 @@ export default function DefaultSidebar() {
           )}
         </IconButton>
       </div>
-
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>
         <Card className="w-auto p-4 shadow-xl shadow-blue-gray-900/5">
           <div className="mb-2 ">
@@ -143,10 +128,6 @@ export default function DefaultSidebar() {
           <List>{navList}</List>
         </Card>
       </Drawer>
-
-      <MobileNav open={openNav} className="lg:hidden block">
-        <div>{navList}</div>
-      </MobileNav>
     </div>
   );
 }

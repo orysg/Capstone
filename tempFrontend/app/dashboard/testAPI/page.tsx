@@ -1,10 +1,12 @@
-import TestAPI from "../../components/TestAPI"
+import GenerateImages from "@/app/components/GenerateImages";
+import TestAPI from "../../components/TestAPI";
 const testAPIPage = () => {
-    return(
-            <div >
-                <TestAPI />
-            </div>
-    );
+  return (
+    <div>
+      <TestAPI />
+      <GenerateImages />
+    </div>
+  );
 };
 
 export default testAPIPage;

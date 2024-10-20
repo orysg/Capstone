@@ -1,4 +1,4 @@
-'use client';
+
 import React from "react";
 import dynamic from "next/dynamic";
 import {
@@ -171,9 +171,7 @@ export function ChartsExample5() {
               },
               {
                 name: "2024 Falls",
-                data: [
-                  200, 160, 150, 260, 600, 790, 900, 660, 720, 800,
-                ],
+                data: [200, 160, 150, 260, 600, 790, 900, 660, 720, 800],
               },
             ]}
           />

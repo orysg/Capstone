@@ -15,6 +15,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { Pagination } from "./Pagination";
+import fallHistoryData from "../../public/data/fallHistory.json";
 
 function Table() {
   const [fallHistory, setFallHistory] = useState([]);
@@ -28,16 +29,10 @@ function Table() {
   );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/fetchFallData");
-        const data = await response.json();
-        setFallHistory(data);
-      } catch (error) {
-        console.error("Error fetching fall history data:", error);
-      }
-    };
-    fetchData();
+    const sortedData = fallHistoryData.sort(
+      (a, b) => new Date(b.Timestamp) - new Date(a.Timestamp)
+    );
+    setFallHistory(sortedData);
   }, []);
 
   const TABLE_ROW = paginatedHistory.map((fall) => ({
@@ -50,22 +45,17 @@ function Table() {
   }));
 
   return (
-    <section className="m-10">
-      <Card className="h-full mx-auto max-w-screen">
+    <section className="px-4 py-6 sm:px-6 lg:px-8">
+      <Card className="h-full">
         <CardHeader
           floated={false}
           shadow={false}
           className="rounded-none flex flex-wrap gap-4 justify-between mb-4"
         >
           <div className="mb-8 flex items-center justify-between gap-8">
-            <div>
-              <Typography variant="h5" color="blue-gray">
-                Recent Fall list
-              </Typography>
-              <Typography color="gray" className="mt-1 font-normal">
-                See information about recent falls
-              </Typography>
-            </div>
+            <Typography variant="h5" color="blue-gray">
+              Recent Fall List
+            </Typography>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="w-full md:w-72">
@@ -76,60 +66,62 @@ function Table() {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="overflow-x-auto !px-0 py-2">
-          <table className="w-full min-w-max table-auto">
+        <CardBody className="overflow-hidden !px-0 py-2">
+          {" "}
+          {/* Prevent overflow */}
+          <table className="w-full table-auto">
             <thead>
               <tr>
-                <th className="border-b border-gray-300 !p-4 pb-8">
+                <th className="border-b border-gray-300">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-left md:text-center"
                   >
                     Fall ID
                   </Typography>
                 </th>
-                <th className="border-b border-gray-300 !p-4 pb-8 hidden md:table-cell">
+                <th className="border-b border-gray-300 hidden md:table-cell">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-left md:text-center"
                   >
                     Radar ID
                   </Typography>
                 </th>
-                <th className="border-b border-gray-300 !p-4 pb-8">
+                <th className="border-b border-gray-300">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-center"
                   >
                     Type
                   </Typography>
                 </th>
-                <th className="border-b border-gray-300 !p-4 pb-8">
+                <th className="border-b border-gray-300">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-center"
                   >
                     Date
                   </Typography>
                 </th>
-                <th className="border-b border-gray-300 !p-4 pb-8">
+                <th className="border-b border-gray-300 hidden md:table-cell">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-left md:text-center"
                   >
                     Status
                   </Typography>
                 </th>
-                <th className="border-b border-gray-300 !p-4 pb-8">
+                <th className="border-b border-gray-300 hidden md:table-cell">
                   <Typography
                     color="blue-gray"
                     variant="small"
-                    className="!font-bold"
+                    className="!font-bold text-left md:text-center"
                   >
                     Actions
                   </Typography>
@@ -149,12 +141,12 @@ function Table() {
                       <td className={classes}>
                         <Typography
                           variant="small"
-                          className="!font-normal text-gray-600 text-center"
+                          className="!font-normal text-gray-600 text-left md:text-center"
                         >
                           {fallID}
                         </Typography>
                       </td>
-                      <td className={"${classes} hidden md:table-cell"}>
+                      <td className={`${classes} hidden md:table-cell`}>
                         <Typography
                           variant="small"
                           className="!font-normal text-gray-600 text-center"
@@ -163,7 +155,7 @@ function Table() {
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <div className="flex justify-center items-center">
+                        <div className="flex justify-start md:justify-center items-center">
                           <Chip
                             size="sm"
                             variant="ghost"
@@ -181,21 +173,21 @@ function Table() {
                       <td className={classes}>
                         <Typography
                           variant="small"
-                          className="!font-normal text-gray-600 text-center"
+                          className="!font-normal text-gray-600 text-left md:text-center"
                         >
                           {Date}
                         </Typography>
                       </td>
-                      <td className={classes}>
+                      <td className={`${classes} hidden md:table-cell`}>
                         <Typography
                           variant="small"
-                          className="!font-bold text-center"
+                          className="!font-bold text-left md:text-center"
                         >
                           {Status}
                         </Typography>
                       </td>
-                      <td className={classes}>
-                        <div className="flex justify-end gap-4">
+                      <td className={`${classes} hidden md:table-cell`}>
+                        <div className="flex justify-center">
                           <IconButton variant="text" size="sm">
                             <DocumentMagnifyingGlassIcon className="h-5 w-5 text-gray-900" />
                           </IconButton>

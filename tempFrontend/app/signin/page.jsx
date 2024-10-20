@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import {
   Card,
   Input,
@@ -11,14 +11,13 @@ import {
 } from "@material-tailwind/react";
 
 import Image from "next/image";
-import { mockUsers } from "../data/mockUsers"; 
+import { mockUsers } from "../data/mockUsers";
 
 function Login1() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -50,7 +49,7 @@ function Login1() {
           </CardHeader>
           <CardBody>
             <form
-              onSubmit={handleLogin}  
+              onSubmit={handleLogin}
               className="flex flex-col gap-4 md:mt-12"
             >
               <div>
@@ -75,7 +74,7 @@ function Login1() {
                     className: "hidden",
                   }}
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}  
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -100,7 +99,7 @@ function Login1() {
                     className: "hidden",
                   }}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}  // Update password state
+                  onChange={(e) => setPassword(e.target.value)} // Update password state
                 />
               </div>
 
@@ -114,7 +113,7 @@ function Login1() {
                 size="lg"
                 className="bg-primaryColour text-night hover:bg-secondaryColour"
                 fullWidth
-                type="submit"  // Set submit button
+                type="submit" // Set submit button
               >
                 Continue
               </Button>
