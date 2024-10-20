@@ -9,9 +9,9 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-
+import axios from "axios"; // To handle API requests
+import jwtDecode from "jwt-decode"; // For decoding the token to check roles
 import Image from "next/image";
-import { mockUsers } from "../data/mockUsers";
 
 function Login1() {
   const [email, setEmail] = useState("");
@@ -19,15 +19,63 @@ function Login1() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  // Regex for email validation
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Regex for password complexity validation
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const user = mockUsers.find(
-      (user) => user.email === email && user.password === password
-    );
-    if (user) {
-      router.push("/dashboard");
-    } else {
-      setError("Invalid email or password");
+
+    // Front-end validation before sending request
+    if (!validateEmail(email)) {
+      setError("Invalid email format.");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError(
+        "Password must be at least 8 characters, contain an uppercase letter, a number, and a special character."
+      );
+      return;
+    }
+
+    try {
+      // Send login request to the backend
+      const response = await axios.post("http://localhost:4000/api/login", {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+
+      // Save token to localStorage
+      localStorage.setItem("token", token);
+
+      // Decode the token to check user role (if needed)
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.userType;
+
+      // Route based on role
+      if (userRole === "Admin") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      // Handle errors (e.g., invalid credentials, server error)
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
   };
 
@@ -99,7 +147,7 @@ function Login1() {
                     className: "hidden",
                   }}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Update password state
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
@@ -113,7 +161,7 @@ function Login1() {
                 size="lg"
                 className="bg-primaryColour text-night hover:bg-secondaryColour"
                 fullWidth
-                type="submit" // Set submit button
+                type="submit"
               >
                 Continue
               </Button>
