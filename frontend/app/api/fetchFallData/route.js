@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-
+/*
 // Function to fetch fall data from JSON file
 const fetchFallData = () => {
     const filePath = path.join(process.cwd(), 'public', 'data', 'fallHistory.json');
@@ -15,6 +15,7 @@ const fetchFallData = () => {
 };
 
 // API route handler
+
 export async function GET(req, res) {
     try {
         const data = fetchFallData();
@@ -37,3 +38,4 @@ export async function GET(req, res) {
         });
     }
 }
+*/

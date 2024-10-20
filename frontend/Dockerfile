@@ -32,6 +32,8 @@ COPY --from=builder /app/.next /app/.next
 COPY --from=builder /app/public /app/public
 COPY --from=builder /app/package.json /app/yarn.lock ./
 
+# Install only production dependencies
+RUN yarn install --production --frozen-lockfile
 # Set environment to production
 ENV NODE_ENV=production
 

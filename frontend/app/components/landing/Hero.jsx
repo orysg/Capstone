@@ -1,17 +1,12 @@
-'use client';
+"use client";
 import React from "react";
-import {
-  Button,
-  Typography,
-  Input,
-} from "@material-tailwind/react";
+import { Button, Typography, Input } from "@material-tailwind/react";
 
 function HeroSection16() {
-
   React.useEffect(() => {
     window.addEventListener(
       "resize",
-      () => window.innerWidth >= 960 && setOpen(false),
+      () => window.innerWidth >= 960 && setOpen(false)
     );
   }, []);
 
@@ -26,9 +21,7 @@ function HeroSection16() {
               className="mx-auto my-6 w-full leading-snug  !text-2xl lg:max-w-3xl lg:!text-5xl"
             >
               Experience a new level of{" "}
-              <span className="text-primaryColour leading-snug ">
-                safety
-              </span>{" "}
+              <span className="text-primaryColour leading-snug ">safety</span>{" "}
               and{" "}
               <span className="leading-snug text-primaryColour">
                 peace of mind
@@ -39,7 +32,9 @@ function HeroSection16() {
               variant="lead"
               className="mx-auto w-full !text-gray-500 lg:text-lg text-base"
             >
-              Don’t wait for an emergency. Be proactive with FrontGuard. Our innovative solution ensures that you or your loved ones are always protected.
+              Don’t wait for an emergency. Be proactive with FrontGuard. Our
+              innovative solution ensures that you or your loved ones are always
+              protected.
             </Typography>
             <div className="mt-8 grid w-full place-items-start md:justify-center">
               <div className="mb-2 flex w-full flex-col gap-4 md:flex-row">
