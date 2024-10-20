@@ -23,10 +23,18 @@ COPY . .
 
 RUN yarn build
 
-FROM nginx:1.27.1-alpine3.20 AS prod
+# Production image for running the Next.js server
+FROM base AS prod
 
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/.next /app/.next
+COPY --from=builder /app/public /app/public
+COPY --from=builder /app/package.json /app/yarn.lock ./
 
-EXPOSE 80
+# Set environment to production
+ENV NODE_ENV=production
 
-CMD ["nginx", "-g", "daemon off;"]
+# Start the Next.js server in production mode
+CMD ["yarn", "prod"]
+
+# Expose port 3000 for the Next.js server
+EXPOSE 3000
