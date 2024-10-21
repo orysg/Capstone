@@ -14,10 +14,12 @@ ENV NODE_ENV=development
 
 RUN yarn install
 
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
 
-# Production image
+# Production builder image
 FROM base AS builder
+
+ENV NODE_ENV=production
 
 RUN yarn install --frozen-lockfile
 
@@ -25,20 +27,24 @@ COPY . .
 
 RUN yarn build
 
-# Production image for running the Next.js server
-FROM base AS prod
+# Production runtime image
+FROM node:20.17.0-alpine3.20 AS prod
 
-COPY --from=builder /app/.next /app/.next
-COPY --from=builder /app/public /app/public
-COPY --from=builder /app/package.json /app/yarn.lock ./
+WORKDIR /app
 
-# Install only production dependencies
+# Copy everything till I know it works
+COPY --from=builder /app ./
+
+# Copy only necessary files from the build stage
+# COPY --from=builder /app/.next /app/.next
+# COPY --from=builder /app/public /app/public
+# COPY --from=builder /app/package.json /app/yarn.lock ./
+
+# Some "dev" dependencies may need to be moved into production
 RUN yarn install --production --frozen-lockfile
-# Set environment to production
+
 ENV NODE_ENV=production
 
-# Start the Next.js server in production mode
-CMD ["yarn", "prod"]
-
-# Expose port 3000 for the Next.js server
 EXPOSE 3000
+
+CMD ["yarn", "start"]
