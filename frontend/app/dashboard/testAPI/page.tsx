@@ -1,4 +1,4 @@
-import GenerateImages from "@/app/components/GenerateImages";
+import GenerateImages from "../../components/GenerateImages";
 import TestAPI from "../../components/TestAPI";
 const testAPIPage = () => {
   return (
