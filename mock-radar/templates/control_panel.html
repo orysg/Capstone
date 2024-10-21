@@ -3,27 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <title>Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 8px;
+            margin: 5px 0;
+            display: block;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            margin-top: 20px;
+            color: green;
+        }
+        .fall-data {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function fetchMockData() {
+            fetch('/api/mock-data')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('radar-table-body');
+                    tableBody.innerHTML = '';  // Clear old data
+
+                    data.forEach(event => {
+                        const row = document.createElement('tr');
+                        const radarIdCell = document.createElement('td');
+                        radarIdCell.textContent = event.radarID;
+                        const lastFallCell = document.createElement('td');
+                        lastFallCell.textContent = event.lastFallDetected || 'No fall detected';
+                        row.appendChild(radarIdCell);
+                        row.appendChild(lastFallCell);
+                        tableBody.appendChild(row);
+                    });
+
+                    // Update the radar dropdowns
+                    const radarSelects = document.querySelectorAll('.radar-id-select');
+                    radarSelects.forEach(select => {
+                        select.innerHTML = '';  // Clear old options
+                        data.forEach(event => {
+                            const option = document.createElement('option');
+                            option.value = event.radarID;
+                            option.text = `Radar ID: ${event.radarID}`;
+                            select.appendChild(option);
+                        });
+                    });
+                });
+        }
+
+        function displayMessage(msg) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = msg;
+        }
+
+        function submitForm(action, formId) {
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+            fetch(action, { method: 'POST', body: formData })
+                .then(response => response.text())
+                .then(msg => {
+                    displayMessage(msg);
+                    fetchMockData();  // Refresh the mock data display
+                });
+            return false;  // Prevent default form submission
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMockData();  // Load mock data on page load
+        });
+    </script>
 </head>
 <body>
+
     <h1>Control Panel</h1>
 
-    <h2>Switch Template</h2>
-    <form action="/switch-template" method="post">
-        <label for="template-id">Template ID:</label>
-        <input type="text" id="template-id" name="id" required>
-        <button type="submit">Switch Template</button>
-    </form>
+    <!-- Mock Data Display -->
+    <h2>Current Fall Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Radar ID</th>
+                <th>Last Fall Detected</th>
+            </tr>
+        </thead>
+        <tbody id="radar-table-body">
+            <!-- Populated dynamically -->
+        </tbody>
+    </table>
 
+    <!-- Trigger Fall -->
     <h2>Trigger Fall</h2>
-    <form action="/trigger-fall" method="post">
-        <label for="case-id">Case ID:</label>
-        <input type="number" id="case-id" name="case" required>
+    <form id="trigger-fall-form" onsubmit="return submitForm('/api/trigger-fall', 'trigger-fall-form')">
+        <label for="radar-id">Select Radar ID:</label>
+        <select id="radar-id" name="radarID" class="radar-id-select" required>
+            <!-- Populated dynamically -->
+        </select>
         <button type="submit">Trigger Fall</button>
     </form>
 
-    <h2>Reset Template</h2>
-    <form action="/reset-template" method="post">
-        <button type="submit">Reset Template</button>
+    <!-- Trigger Fall with Delay -->
+    <h2>Trigger Fall with Delay</h2>
+    <form id="trigger-fall-delay-form" onsubmit="return submitForm('/api/trigger-fall-delay', 'trigger-fall-delay-form')">
+        <label for="radar-id-delay">Select Radar ID:</label>
+        <select id="radar-id-delay" name="radarID" class="radar-id-select" required>
+            <!-- Populated dynamically -->
+        </select>
+        <label for="delay">Set Delay (seconds):</label>
+        <input type="number" id="delay" name="delay" value="5" required>
+        <button type="submit">Trigger Fall with Delay</button>
     </form>
+
+    <!-- Add New Radar -->
+    <h2>Add New Radar</h2>
+    <form id="add-radar-form" onsubmit="return submitForm('/api/add-radar', 'add-radar-form')">
+        <label for="new-radar-id">New Radar ID:</label>
+        <input type="number" id="new-radar-id" name="radarID" required>
+        <button type="submit">Add Radar</button>
+    </form>
+
+    <!-- Remove Radar -->
+    <h2>Remove Radar</h2>
+    <form id="remove-radar-form" onsubmit="return submitForm('/api/remove-radar', 'remove-radar-form')">
+        <label for="remove-radar-id">Select Radar ID to Remove:</label>
+        <select id="remove-radar-id" name="radarID" class="radar-id-select" required>
+            <!-- Populated dynamically -->
+        </select>
+        <button type="submit">Remove Radar</button>
+    </form>
+
+    <!-- Reset Template -->
+    <h2>Reset Data</h2>
+    <form id="reset-template-form" onsubmit="return submitForm('/api/reset-template', 'reset-template-form')">
+        <button type="submit">Reset Data</button>
+    </form>
+
+    <!-- Feedback Message -->
+    <div id="message"></div>
+
 </body>
 </html>
