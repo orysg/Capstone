@@ -76,7 +76,7 @@ const GenerateImages = () => {
           <Button
             className="bg-primaryColour text-night hover:bg-secondaryColour"
             fullWidth
-            onclick={handleSubmit}
+            onClick={handleSubmit}
           >
             Submit
           </Button>
