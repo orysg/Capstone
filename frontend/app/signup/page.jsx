@@ -7,7 +7,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import axios from "axios";  // Import axios for API requests
+import axios from "axios";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ export default function Signup() {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value,  // Handle checkbox separately
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -58,29 +58,26 @@ export default function Signup() {
       return;
     }
 
-    setError(""); // Clear any previous errors
-    setSuccess(""); // Clear any previous success messages
+    setError("");
+    setSuccess("");
 
     try {
       const response = await axios.post("http://localhost:4000/api/register", {
         email,
-        firstName: name.split(" ")[0],  // Split name to first and last name
+        firstName: name.split(" ")[0],
         lastName: name.split(" ")[1] || "",
         password,
-        userType: "Admin",  // Or use "Carer" or "Guest" based on your needs
+        userType: "Admin",
       });
 
       if (response.status === 201 || response.status === 200) {
         const { token } = response.data;
-        // Save token to localStorage
-        localStorage.setItem('token', token);
-        
+        localStorage.setItem("token", token);
         setSuccess("Registration successful! Redirecting to login page...");
-        
-        // Optionally, redirect to a protected route or login page after success
+
         setTimeout(() => {
-          window.location.href = "/signin";  // Or to a protected page if needed
-        }, 2000);  // 2 seconds delay for showing success message
+          window.location.href = "/signin";
+        }, 2000);
       } else {
         setError("Something went wrong, please try again.");
       }
@@ -94,95 +91,76 @@ export default function Signup() {
   };
 
   return (
-    <Card color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray">
-        Sign Up
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Nice to meet you! Enter your details to register.
-      </Typography>
-      <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
-        <div className="mb-1 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Your Name
-          </Typography>
-          <Input
-            size="lg"
-            name="name"
-            placeholder="John Doe"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Your Email
-          </Typography>
-          <Input
-            size="lg"
-            name="email"
-            placeholder="name@mail.com"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Password
-          </Typography>
-          <Input
-            type="password"
-            name="password"
-            size="lg"
-            placeholder="********"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-        </div>
-        <Checkbox
-          name="agreeToTerms"
-          checked={formData.agreeToTerms}
-          onChange={handleChange}
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree to the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-gray-900"
-              >
-                &nbsp;Terms and Conditions
-              </a>
-            </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
-        />
-        <Button className="mt-6" fullWidth type="submit">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card color="white" shadow={true} className="p-6 max-w-md w-full">
+        <Typography variant="h4" color="blue-gray" className="text-center mb-4">
           Sign Up
-        </Button>
-        {error && <Typography color="red" className="mt-2 text-center">{error}</Typography>}
-        {success && <Typography color="green" className="mt-2 text-center">{success}</Typography>}
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a href="#" className="font-medium text-gray-900">
-            Sign In
-          </a>
         </Typography>
-      </form>
-    </Card>
+        <Typography color="gray" className="text-center mb-8 font-normal">
+          Create your account by filling in the information below
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-4 mb-4">
+            <Input
+              size="lg"
+              name="name"
+              label="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <Input
+              size="lg"
+              name="email"
+              label="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <Input
+              type="password"
+              name="password"
+              size="lg"
+              label="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <Checkbox
+            name="agreeToTerms"
+            checked={formData.agreeToTerms}
+            onChange={handleChange}
+            label={
+              <Typography variant="small" color="gray">
+                I agree to the{" "}
+                <a href="#" className="font-medium text-blue-500">
+                  Terms and Conditions
+                </a>
+              </Typography>
+            }
+          />
+          <Button className="mt-6" fullWidth type="submit" color="blue">
+            Sign Up
+          </Button>
+          {error && (
+            <Typography color="red" className="mt-2 text-center">
+              {error}
+            </Typography>
+          )}
+          {success && (
+            <Typography color="green" className="mt-2 text-center">
+              {success}
+            </Typography>
+          )}
+          <Typography color="gray" className="mt-4 text-center">
+            Already have an account?{" "}
+            <a href="/signin" className="font-medium text-blue-500">
+              Sign In
+            </a>
+          </Typography>
+        </form>
+      </Card>
+    </div>
   );
 }
