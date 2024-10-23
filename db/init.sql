@@ -13,7 +13,7 @@ CREATE TABLE Users (
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     PasswordHash TEXT NOT NULL,
-    UserType UserType DEFAULT 'Guest' NOT NULL
+    UserType UserType DEFAULT 'Admin' NOT NULL
     -- Add a timezone?
 );
 

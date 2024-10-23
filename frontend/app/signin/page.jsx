@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios"; // To handle API requests
-import jwtDecode from "jwt-decode"; // For decoding the token to check roles
+import jwtDecode from "jwt-decode"; // Correct import
 import Image from "next/image";
 
 function Login1() {
@@ -65,9 +65,9 @@ function Login1() {
 
       // Route based on role
       if (userRole === "Admin") {
-        router.push("/admin-dashboard");
+        router.push("/dashboard"); // You can update this to go to your specific route
       } else {
-        router.push("/dashboard");
+        router.push("/dashboard"); // Change this as per your role-based routing logic
       }
     } catch (error) {
       // Handle errors (e.g., invalid credentials, server error)
@@ -163,7 +163,7 @@ function Login1() {
                 fullWidth
                 type="submit"
               >
-                Continue
+                Sign In
               </Button>
 
               <Button
