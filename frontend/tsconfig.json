@@ -37,7 +37,7 @@
     "app/components/Date.tsx",
     "app/components/Avatar.jsx",
     "app/components/DashboardHome.jsx"
-  ],
+, "app/dashboard/radar-kit-management/page.jsx", "app/dashboard/patient-data/page.jsx", "app/dashboard/history/page.jsx", "app/dashboard/active-fall-alerts/page.jsx", "app/dashboard/active-fall-alerts/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
