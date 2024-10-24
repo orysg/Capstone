@@ -43,7 +43,7 @@ function UserTable() {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:4000/api/users/${deleteUserId}`);
-      setUsers(users.filter((user) => user.userid !== deleteUserId));
+      setUsers(users.filter((user) => user.UserID !== deleteUserId)); // Changed userid to UserID
       setShowDeleteModal(false); // Close the delete modal after successful deletion
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -60,8 +60,8 @@ function UserTable() {
   const handleSaveEdit = async () => {
     try {
       console.log('Saving user data:', editUser); 
-      const response = await axios.put(`http://localhost:4000/api/users/${editUser.userid}`, editUser);
-      setUsers(users.map((user) => (user.userid === editUser.userid ? response.data : user)));
+      const response = await axios.put(`http://localhost:4000/api/users/${editUser.UserID}`, editUser); // Changed userid to UserID
+      setUsers(users.map((user) => (user.UserID === editUser.UserID ? response.data : user))); // Changed userid to UserID
       setShowEditModal(false); // Hide the modal
       setEditUser(null); // Clear the edit user state
     } catch (error) {
@@ -145,25 +145,25 @@ function UserTable() {
             </thead>
             <tbody>
               {paginatedUsers.map((user, index) => (
-                <tr key={user.userid || index}>
+                <tr key={user.UserID || index}>  {/* Changed userid to UserID */}
                   <td className="!p-4 border-b border-gray-300">
                     <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
-                      {user.userid || `No ID (${index})`}
+                      {user.UserID || `No ID (${index})`}  {/* Changed userid to UserID */}
                     </Typography>
                   </td>
                   <td className="!p-4 border-b border-gray-300">
                     <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
-                      {user.firstname} {user.lastname}
+                      {user.FirstName} {user.LastName}
                     </Typography>
                   </td>
                   <td className="!p-4 border-b border-gray-300">
                     <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
-                      {user.email}
+                      {user.Email}
                     </Typography>
                   </td>
                   <td className="!p-4 border-b border-gray-300 hidden md:table-cell">
                     <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
-                      {user.usertype}
+                      {user.UserType}
                     </Typography>
                   </td>
                   <td className="!p-4 border-b border-gray-300 hidden md:table-cell">
@@ -172,7 +172,7 @@ function UserTable() {
                         <PencilIcon className="h-5 w-5 text-gray-900" />
                       </IconButton>
                       <IconButton variant="text" size="sm" onClick={() => {
-                        setDeleteUserId(user.userid);
+                        setDeleteUserId(user.UserID); // Changed userid to UserID
                         setShowDeleteModal(true); // Show the delete confirmation modal
                       }}>
                         <TrashIcon className="h-5 w-5 text-gray-900" />
@@ -196,23 +196,23 @@ function UserTable() {
         <div className="flex flex-col gap-4">
           <Input
             label="First Name"
-            value={editUser?.firstname || ""}
-            onChange={(e) => setEditUser({ ...editUser, firstname: e.target.value })}
+            value={editUser?.FirstName || ""}
+            onChange={(e) => setEditUser({ ...editUser, FirstName: e.target.value })}
           />
           <Input
             label="Last Name"
-            value={editUser?.lastname || ""}
-            onChange={(e) => setEditUser({ ...editUser, lastname: e.target.value })}
+            value={editUser?.LastName || ""}
+            onChange={(e) => setEditUser({ ...editUser, LastName: e.target.value })}
           />
           <Input
             label="Email"
-            value={editUser?.email || ""}
-            onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+            value={editUser?.Email || ""}
+            onChange={(e) => setEditUser({ ...editUser, Email: e.target.value })}
           />
           <Input
             label="Role"
-            value={editUser?.usertype || ""}
-            onChange={(e) => setEditUser({ ...editUser, usertype: e.target.value })}
+            value={editUser?.UserType || ""}
+            onChange={(e) => setEditUser({ ...editUser, UserType: e.target.value })}
           />
         </div>
         </DialogBody>
