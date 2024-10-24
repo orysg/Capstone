@@ -5,8 +5,6 @@ import {
   Card,
   CardBody,
   Typography,
-  Button,
-  CardFooter,
 } from "@material-tailwind/react";
 import merge from "deepmerge";
 import useFalls from '../hooks/useFalls';
@@ -161,20 +159,6 @@ export function ChartsExample5() {
             series={seriesData}
           />
         </CardBody>
-        <CardFooter className="flex gap-6 flex-wrap items-center justify-between">
-          <div>
-            <Typography variant="h6" color="blue-gray">
-              Fall Report
-            </Typography>
-            <Typography
-              variant="small"
-              className="font-normal text-gray-600 mt-1"
-            >
-              Total falls recorded over time
-            </Typography>
-          </div>
-          <Button variant="outlined">View report</Button>
-        </CardFooter>
       </Card>
     </section>
   );
