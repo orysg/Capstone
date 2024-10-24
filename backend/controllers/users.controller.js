@@ -42,6 +42,38 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Update an existing User
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract userID from request parameters
+    const { FirstName, LastName, Email, UserType } = req.body; // Destructure the updated fields from the request body
+
+    // Find the user by ID
+    const user = await User.findByPk(id);
+
+    // If user doesn't exist, return a 404 error
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update the user with the new values
+    user.FirstName = FirstName || user.FirstName;
+    user.LastName = LastName || user.LastName;
+    user.Email = Email || user.Email;
+    user.UserType = UserType || user.UserType;
+
+    // Save the updated user in the database
+    await user.save();
+
+    // Return the updated user object
+    return res.status(200).json(user);
+  } catch (error) {
+    // Handle any errors
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Delete a User
 const deleteUser = async (req, res) => {
   try {
@@ -57,5 +89,6 @@ module.exports = {
   createUser,
   getAllUsers,
   getUserById,
-  deleteUser,
+  updateUser,
+  deleteUser
 };

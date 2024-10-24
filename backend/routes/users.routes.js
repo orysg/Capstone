@@ -12,6 +12,9 @@ router.get('/', usersController.getAllUsers); // authenticateToken, authorizeAdm
 // Get a single User by ID
 router.get('/:id', usersController.getUserById); // authenticateToken, authorizeAdmin
 
+// Update an existing User
+router.put('/:id', usersController.updateUser);
+
 // Delete a User by ID
 router.delete('/:id', usersController.deleteUser); // authenticateToken, authorizeAdmin
 
