@@ -14,7 +14,7 @@ const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-function AreaChart({ height = 350, series, colors, options }) {
+function AreaChart({ height = 220, series, colors, options }) {
   const chartOptions = React.useMemo(
     () => ({
       colors,

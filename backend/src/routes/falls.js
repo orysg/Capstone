@@ -16,12 +16,12 @@ router.get('/', async (req, res) => {
 
 // Add a new fall
 router.post('/', async (req, res) => {
-  const { radarId, fallType, responseStatus = 'Pending' } = req.body;
+  const { radarId, fallType, responseStatus = 'Pending', timestamp } = req.body;
 
   try {
     const result = await pool.query(
-      'INSERT INTO Falls (RadarID, FallType, ResponseStatus) VALUES ($1, $2, $3) RETURNING *',
-      [radarId, fallType, responseStatus]
+      'INSERT INTO Falls (RadarID, FallType, ResponseStatus, Timestamp) VALUES ($1, $2, $3, $4) RETURNING *',
+      [radarId, fallType, responseStatus,  timestamp || new Date()]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

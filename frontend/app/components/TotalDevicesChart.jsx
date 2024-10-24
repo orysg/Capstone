@@ -73,7 +73,7 @@ const DeviceChart = {
   series: [
     {
       name: "Active Devices",
-      data: [10, 15, 20, 25, 30, 35, 40, 50, 60],
+      data: [2, 3, 5, 1, 3, 2, 4, 1, 2],
     },
   ],
   options: {
