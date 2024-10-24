@@ -6,13 +6,9 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Button,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import useRadarCount from '../hooks/useRadarCount';
+
 
 // Import ApexCharts dynamically
 const Chart = dynamic(() => import("react-apexcharts"), {
@@ -109,20 +105,28 @@ const DeviceChart = {
   },
 };
 
-const ChartsCardData = [
-  {
-    title: "Total Devices",
-    price: ["32"],
-    ActiveDevices: "Active Devices",
-    volume: "24h Volume",
-    ActiveNumber: "18",
-    VolumeNumber: "24",
-    chart: DeviceChart,
-  },
-];
+
 
 // TotalDevicesChart component
 const TotalDevicesChart = () => {
+  const { totalRadars, loading, error } = useRadarCount();
+  if (loading) {
+    return <div>Loading...</div>;
+  } else if (error) { 
+    return <div>Error: {error}</div>;
+  } 
+  const ChartsCardData = [
+    {
+      title: "Total Devices",
+      price: totalRadars || 0,
+      ActiveDevices: "Active Devices",
+      volume: "24h Volume",
+      ActiveNumber: "0",
+      VolumeNumber: "0",
+      chart: DeviceChart,
+    },
+  ];
+  
   return (
     <Card className="shadow-md border border-gray-200 w-full h-fit">
       {ChartsCardData.map((data, index) => (
@@ -140,31 +144,10 @@ const TotalDevicesChart = () => {
                 {data.title}
               </Typography>
               <Typography variant="h3" color="blue-gray">
-                {data.price[0]}{" "}
+                {data.price}{" "}
                 <span className="text-gray-500">{data.price[1]}</span>
               </Typography>
             </div>
-            <Menu>
-              <MenuHandler>
-                <Button
-                  size="sm"
-                  color="gray"
-                  variant="outlined"
-                  className="flex items-center gap-1 !border-gray-300"
-                >
-                  last 24h
-                  <ChevronDownIcon
-                    strokeWidth={4}
-                    className="w-3 h-3 text-gray-900"
-                  />
-                </Button>
-              </MenuHandler>
-              <MenuList>
-                <MenuItem>last 12h</MenuItem>
-                <MenuItem>last 10h</MenuItem>
-                <MenuItem>last 24h</MenuItem>
-              </MenuList>
-            </Menu>
           </CardHeader>
           <Chart {...data.chart} />
           <CardBody className="pt-4 flex flex-wrap gap-y-4 justify-between">

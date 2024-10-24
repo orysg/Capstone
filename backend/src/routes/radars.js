@@ -46,4 +46,16 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Endpoint for counting total radars
+router.get('/count', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) FROM Radars');
+        const totalRadars = result.rows[0].count; // Extract the count
+        res.status(200).json({ totalRadars }); // Return the total count
+    } catch (err) {
+        console.error('Error counting radars:', err);
+        res.status(500).json({ error: 'Server error', details: err.message });
+    }
+});
+
 module.exports = router;

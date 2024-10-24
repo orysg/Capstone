@@ -30,4 +30,15 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Get total number of falls
+router.get('/total', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) AS total FROM Falls');
+    res.status(200).json({ totalFalls: parseInt(result.rows[0].total) });
+  } catch (err) {
+    console.error('Error fetching total falls:', err);
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
+
 module.exports = router;

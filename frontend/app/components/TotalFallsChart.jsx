@@ -1,109 +1,145 @@
 import dynamic from "next/dynamic";
+import React from "react";
 import {
   Card,
   CardBody,
   CardHeader,
   Typography,
-  Button,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import merge from "deepmerge";
+import useFalls from '../hooks/useFalls';
+import useFallsCount from '../hooks/useFallsCount';
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const chartsConfig = {
-  chart: {
-    toolbar: {
-      show: false,
-    },
-  },
-  title: {
-    show: "",
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  xaxis: {
-    axisTicks: {
-      show: false,
-    },
-    axisBorder: {
-      show: false,
-    },
-    labels: {
-      show: false,
-    },
-  },
-  yaxis: {
-    labels: {
-      show: false,
-    },
-  },
-  grid: {
-    show: true,
-    borderColor: "#EEEEEE",
-    strokeDashArray: 5,
-    xaxis: {
-      lines: {
-        show: false,
-      },
-    },
-    padding: {
-      top: 5,
-      right: 20,
-    },
-  },
-  fill: {
-    opacity: 0.8,
-  },
-  tooltip: {
-    theme: "light",
-  },
-};
+function AreaChart({ height = 350, series, colors, options }) {
+  const chartOptions = React.useMemo(
+    () => ({
+      colors,
+      ...merge(
+        {
+          chart: {
+            height: height,
+            type: "area",
+            zoom: {
+              enabled: false,
+            },
+            toolbar: {
+              show: false,
+            },
+          },
+          title: {
+            show: "",
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          legend: {
+            show: false,
+          },
+          markers: {
+            size: 0,
+            strokeWidth: 0,
+            strokeColors: "transparent",
+          },
+          stroke: {
+            curve: "smooth",
+            width: 2,
+          },
+          grid: {
+            show: true,
+            borderColor: "#EEEEEE",
+            strokeDashArray: 5,
+            xaxis: {
+              lines: {
+                show: true,
+              },
+            },
+            padding: {
+              top: 5,
+              right: 20,
+            },
+          },
+          tooltip: {
+            theme: "light",
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: "#757575",
+                fontSize: "12px",
+                fontFamily: "inherit",
+                fontWeight: 300,
+              },
+            },
+          },
+          xaxis: {
+            axisTicks: {
+              show: false,
+            },
+            axisBorder: {
+              show: false,
+            },
+            labels: {
+              style: {
+                colors: "#757575",
+                fontSize: "12px",
+                fontFamily: "inherit",
+                fontWeight: 300,
+              },
+            },
+          },
+          fill: {
+            type: "gradient",
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0,
+              opacityTo: 0,
+              stops: [0, 100],
+            },
+          },
+        },
+        options ? options : {}
+      ),
+    }),
+    [height, colors, options]
+  );
 
-const fallChart = {
-  type: "area",
-  height: 220,
-  series: [
-    {
-      name: "2024 Falls",
-      data: [40, 40, 80, 100, 105, 110, 120, 140, 180],
-    },
-  ],
-  options: {
-    ...chartsConfig,
-    xaxis: {
-      ...chartsConfig.xaxis,
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-      ],
-    },
-    colors: ["#2196F3"],
-    stroke: {
-      lineCap: "round",
-      width: 2,
-    },
-    fill: {
-      opacity: 0,
-      type: "outline",
-    },
-  },
-};
+  return (
+    <Chart type="area" height={height} series={series} options={chartOptions} />
+  );
+}
 
 const TotalFallsChart = () => {
+  const { falls, loading, error } = useFalls();
+  const { totalFalls } = useFallsCount();
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Prepare data for the chart
+  const fallCounts = {};
+
+  // Group falls by date (or hour, depending on your requirement)
+  falls.forEach(fall => {
+    const date = new Date(fall.timestamp).toLocaleDateString(); // Format the date as needed
+    if (!fallCounts[date]) {
+      fallCounts[date] = 0;
+    }
+    fallCounts[date] += 1; // Count falls for each date
+  });
+
+  // Convert the counts object into a sorted array for the chart
+  const sortedDates = Object.keys(fallCounts).sort((a, b) => new Date(a) - new Date(b));
+  const seriesData = [
+    {
+      name: "Falls Over Time",
+      data: sortedDates.map(date => fallCounts[date]), // Get counts for each date
+    },
+  ];
+  
   return (
     <Card className="shadow-md border border-gray-200 w-full h-fit">
       <CardHeader
@@ -119,33 +155,19 @@ const TotalFallsChart = () => {
             Total Falls
           </Typography>
           <Typography variant="h3" color="blue-gray">
-            180
+          {totalFalls}
           </Typography>
         </div>
-        <Menu>
-          <MenuHandler>
-            <Button
-              size="sm"
-              color="gray"
-              variant="outlined"
-              className="flex items-center gap-1 !border-gray-300"
-            >
-              last 24h
-              <ChevronDownIcon
-                strokeWidth={4}
-                className="w-3 h-3 text-gray-900"
-              />
-            </Button>
-          </MenuHandler>
-          <MenuList>
-            <MenuItem>last 12h</MenuItem>
-            <MenuItem>last Week</MenuItem>
-            <MenuItem>last Year</MenuItem>
-            <MenuItem>All Falls</MenuItem>
-          </MenuList>
-        </Menu>
       </CardHeader>
-      <Chart {...fallChart} />
+      <AreaChart
+            colors={["#4CAF50"]}
+            options={{
+              xaxis: {
+                categories: sortedDates, // Use sorted dates for the x-axis
+              },
+            }}
+            series={seriesData}
+          />
       <CardBody className="pt-4 flex flex-wrap gap-y-4 justify-between">
         <div>
           <Typography

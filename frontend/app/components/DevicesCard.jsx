@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Card, CardBody } from "@material-tailwind/react";
+import useRadarCount from '../hooks/useRadarCount';
 
 function DevicesCard({ name, devices }) {
   return (
@@ -9,29 +10,38 @@ function DevicesCard({ name, devices }) {
           {name}
         </Typography>
         <Typography variant="h3" color="blue-gray">
-          {devices}{" "}
+          {devices}
         </Typography>
       </CardBody>
     </Card>
   );
 }
 
-const DeviceCardData = [
-  {
-    name: "Active Devices",
-    devices: "16",
-  },
-  {
-    name: "Devices Detecting Movement",
-    devices: "10",
-  },
-  {
-    name: "Total Devices",
-    devices: "47",
-  },
-];
-
 function DeviceCards() {
+  const { totalRadars, loading, error } = useRadarCount();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  } else if (error) { 
+    return <div>Error: {error}</div>;
+  } 
+
+  
+  const DeviceCardData = [
+    {
+      name: "Active Devices",
+      devices: "0",
+    },
+    {
+      name: "Devices Detecting Movement",
+      devices: "0",
+    },
+    {
+      name: "Total Devices",
+      devices: totalRadars, 
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-4">
       {DeviceCardData.map((device, index) => (
@@ -40,4 +50,5 @@ function DeviceCards() {
     </div>
   );
 }
+
 export default DeviceCards;
