@@ -14,7 +14,7 @@ const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-function AreaChart({ height = 220, series, colors, options }) {
+function AreaChart({ height = 300, series, colors, options }) {
   const chartOptions = React.useMemo(
     () => ({
       colors,
@@ -158,17 +158,6 @@ const TotalFallsChart = () => {
           {totalFalls}
           </Typography>
         </div>
-      </CardHeader>
-      <AreaChart
-            colors={["#4CAF50"]}
-            options={{
-              xaxis: {
-                categories: sortedDates, // Use sorted dates for the x-axis
-              },
-            }}
-            series={seriesData}
-          />
-      <CardBody className="pt-4 flex flex-wrap gap-y-4 justify-between">
         <div>
           <Typography
             variant="small"
@@ -180,18 +169,16 @@ const TotalFallsChart = () => {
             18
           </Typography>
         </div>
-        <div>
-          <Typography
-            variant="small"
-            className="text-gray-600 font-medium mb-1"
-          >
-            Average UFR
-          </Typography>
-          <Typography variant="h3" color="blue-gray">
-            8.35%
-          </Typography>
-        </div>
-      </CardBody>
+      </CardHeader>
+      <AreaChart
+            colors={["#4CAF50"]}
+            options={{
+              xaxis: {
+                categories: sortedDates, // Use sorted dates for the x-axis
+              },
+            }}
+            series={seriesData}
+          />
     </Card>
   );
 };
