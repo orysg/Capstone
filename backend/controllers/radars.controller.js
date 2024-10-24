@@ -31,6 +31,37 @@ const getRadarById = async (req, res) => {
   }
 };
 
+// Update radar
+const updateRadar = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract radarID from request parameters
+    const { IP, Latitude, Longitude } = req.body; // Destructure the updated fields from the request body
+
+    // Find the radar by ID
+    const radar = await Radar.findByPk(id);
+
+    // If radar doesn't exist, return a 404 error
+    if (!radar) {
+      return res.status(404).json({ message: 'Radar not found' });
+    }
+
+    // Update the radar with the new values
+    radar.IP = IP || radar.IP;
+    radar.Latitude = Latitude || radar.Latitude;
+    radar.Longitude = Longitude || radar.Longitude;
+
+    // Save the updated radar in the database
+    await radar.save();
+
+    // Return the updated radar object
+    return res.status(200).json(radar);
+  } catch (error) {
+    // Handle any errors
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Get the total number of radars
 const getTotalRadars = async (req, res) => {
   try {
@@ -57,6 +88,7 @@ module.exports = {
   createRadar,
   getAllRadars,
   getRadarById,
+  updateRadar,
   getTotalRadars,
   deleteRadar
 };

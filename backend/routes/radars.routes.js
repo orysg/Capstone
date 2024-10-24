@@ -14,6 +14,9 @@ router.get('/total', radarsController.getTotalRadars);
 // Get a single Radar by ID
 router.get('/:id', radarsController.getRadarById);
 
+// Update an existing Radar
+router.put('/:id', radarsController.updateRadar);
+
 // Delete a Radar by ID
 router.delete('/:id', radarsController.deleteRadar);
 
