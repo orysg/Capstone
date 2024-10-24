@@ -8,10 +8,13 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
+import merge from "deepmerge";
+import useFalls from '../hooks/useFalls';
+
+
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-import merge from "deepmerge";
 
 function AreaChart({ height = 350, series, colors, options }) {
   const chartOptions = React.useMemo(
@@ -112,6 +115,32 @@ function AreaChart({ height = 350, series, colors, options }) {
 }
 
 export function ChartsExample5() {
+  const { falls, loading, error } = useFalls();
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Prepare data for the chart
+  const fallCounts = {};
+
+  // Group falls by date (or hour, depending on your requirement)
+  falls.forEach(fall => {
+    const date = new Date(fall.timestamp).toLocaleDateString(); // Format the date as needed
+    if (!fallCounts[date]) {
+      fallCounts[date] = 0;
+    }
+    fallCounts[date] += 1; // Count falls for each date
+  });
+
+  // Convert the counts object into a sorted array for the chart
+  const sortedDates = Object.keys(fallCounts).sort((a, b) => new Date(a) - new Date(b));
+  const seriesData = [
+    {
+      name: "Falls Over Time",
+      data: sortedDates.map(date => fallCounts[date]), // Get counts for each date
+    },
+  ];
+
   return (
     <section className="m-10">
       <Card>
@@ -120,72 +149,28 @@ export function ChartsExample5() {
             <Typography variant="h3" color="blue-gray">
               Fall History
             </Typography>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-1">
-                <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
-                <Typography
-                  variant="small"
-                  className="font-normal text-gray-600"
-                >
-                  2023
-                </Typography>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="h-2 w-2 bg-green-500 rounded-full"></span>
-                <Typography
-                  variant="small"
-                  className="font-normal text-gray-600"
-                >
-                  2024
-                </Typography>
-              </div>
-            </div>
           </div>
-          {/** chart */}
+          {/* Chart */}
           <AreaChart
-            colors={["#4CAF50", "#2196F3"]}
+            colors={["#4CAF50"]}
             options={{
               xaxis: {
-                categories: [
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec",
-                ],
+                categories: sortedDates, // Use sorted dates for the x-axis
               },
             }}
-            series={[
-              {
-                name: "2023 Falls",
-                data: [
-                  0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900,
-                ],
-              },
-              {
-                name: "2024 Falls",
-                data: [200, 160, 150, 260, 600, 790, 900, 660, 720, 800],
-              },
-            ]}
+            series={seriesData}
           />
         </CardBody>
         <CardFooter className="flex gap-6 flex-wrap items-center justify-between">
           <div>
             <Typography variant="h6" color="blue-gray">
-              Annual Fall Report
+              Fall Report
             </Typography>
             <Typography
               variant="small"
               className="font-normal text-gray-600 mt-1"
             >
-              Year-to-Date fall comparison
+              Total falls recorded over time
             </Typography>
           </div>
           <Button variant="outlined">View report</Button>

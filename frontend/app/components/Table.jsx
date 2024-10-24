@@ -15,32 +15,26 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { Pagination } from "./Pagination";
-import fallHistoryData from "../../public/data/fallHistory.json";
+import useFalls from '../hooks/useFalls';
 
 function Table() {
-  const [fallHistory, setFallHistory] = useState([]);
+  const { falls, loading, error } = useFalls();
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(fallHistory.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(falls.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedHistory = fallHistory.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const paginatedFalls = falls.slice(startIndex, startIndex + itemsPerPage);
 
-  useEffect(() => {
-    const sortedData = fallHistoryData.sort(
-      (a, b) => new Date(b.Timestamp) - new Date(a.Timestamp)
-    );
-    setFallHistory(sortedData);
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (falls.length === 0) return <p>No falls data available.</p>;
 
-  const TABLE_ROW = paginatedHistory.map((fall) => ({
-    fallID: fall.FallID,
-    RadarID: fall.RadarID,
-    type: fall.FallType,
-    Date: new Date(fall.Timestamp).toISOString().split("T")[0],
-    Status: fall.ResponseStatus,
+  const TABLE_ROW = paginatedFalls.map((fall) => ({
+    fallID: fall.fallid,
+    RadarID: fall.radarid,
+    type: fall.falltype,
+    Date: new Date(fall.timestamp).toISOString().split("T")[0],
+    Status: fall.responsestatus,
     color: fall.type === "Fast" ? "red" : "green",
   }));
 
@@ -66,9 +60,7 @@ function Table() {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="overflow-hidden !px-0 py-2">
-          {" "}
-          {/* Prevent overflow */}
+        <CardBody className="overflow-hidden !px-0 py-2"> 
           <table className="w-full table-auto">
             <thead>
               <tr>
@@ -135,7 +127,6 @@ function Table() {
                   const classes = isLast
                     ? "!p-4"
                     : "!p-4 border-b border-gray-300";
-
                   return (
                     <tr key={fallID}>
                       <td className={classes}>
