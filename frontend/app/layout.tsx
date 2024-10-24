@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico"/>
       </head>
       <body className="min-h-screen flex bg-gray-100">
         <main className="flex-1 justify-center items-center">

@@ -56,12 +56,18 @@ function Login1() {
 
       const { token } = response.data;
 
-      // Save token to localStorage
-      localStorage.setItem("token", token);
+      if (!token) {
+        setError("No token received from server.");
+        return;
+      }
 
       // Decode the token to check user role (if needed)
       const decodedToken = jwtDecode(token);
       const userRole = decodedToken.userType;
+
+      // Save token to localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("userRole", userRole);
 
       // Route based on role
       if (userRole === "Admin") {
@@ -70,15 +76,27 @@ function Login1() {
         router.push("/dashboard"); // Change this as per your role-based routing logic
       }
     } catch (error) {
+      console.log("Error object:", error); // Log the entire error object for debugging
+    
       // Handle errors (e.g., invalid credentials, server error)
-      if (error.response && error.response.data && error.response.data.error) {
-        setError(error.response.data.error);
+      if (error.response) {
+        // Check if there's a response from the server
+        console.log("Error response:", error.response); // Log the error response for more details
+        console.log("Error response data:", error.response.data); // Log the response data
+    
+        // Display the error message from the server, if available
+        if (error.response.data && error.response.data.error) {
+          setError(error.response.data.error);  // Set the specific error message from the server
+        } else {
+          setError("An error occurred. Please try again.");
+        }
       } else {
-        setError("An error occurred. Please try again.");
+        console.log("No server response, error:", error.message); // Log error message if no response
+        setError("An error occurred. Please check your network and try again.");
       }
     }
-  };
-
+  }
+  
   return (
     <section className="px-8">
       <div className="container mx-auto h-screen grid place-items-center">
