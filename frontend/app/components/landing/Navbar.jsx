@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import {
   Navbar,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -123,7 +123,8 @@ const NavbarDefault = () => {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
+
+      <Collapse open={openNav}>
         <div className="container mx-auto flex flex-col items-center">
           {navList}
           <div className="flex items-center gap-x-1 justify-center">
@@ -149,8 +150,9 @@ const NavbarDefault = () => {
             </a>
           </div>
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 };
+
 export default NavbarDefault;
