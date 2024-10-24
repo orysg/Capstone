@@ -10,7 +10,7 @@ export default function DashboardLayout({
   return (
     <ThemeProvider>
       <div className="relative h-screen bg-gray-100">
-        <DefaultSidebar />
+        <DefaultSidebar/>
         <main className="p-4">{children}</main>
       </div>
     </ThemeProvider>

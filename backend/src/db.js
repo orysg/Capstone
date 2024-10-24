@@ -1,15 +1,15 @@
 const { Pool } = require('pg');
+require('dotenv').config(); 
 
-require('dotenv').config();
+const env = process.env.NODE_ENV || 'development';
 
 const pool = new Pool({
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT || 5432,
-  });
-  
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST || 'db',  // Use 'db' for the host in Docker
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT || 5432,
+});
 
 const MAX_RETRIES = 5;
 const RETRY_INTERVAL_MS = 2000;
