@@ -62,12 +62,11 @@ export default function Signup() {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:4000/api/register", {
+      const response = await axios.post("http://localhost:4000/api/auth/register", {
         email,
         firstName: name.split(" ")[0],
         lastName: name.split(" ")[1] || "",
-        password,
-        userType: "Admin",
+        password
       });
 
       if (response.status === 201 || response.status === 200) {

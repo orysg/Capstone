@@ -49,7 +49,7 @@ function Login1() {
 
     try {
       // Send login request to the backend
-      const response = await axios.post("http://localhost:4000/api/login", {
+      const response = await axios.post("http://localhost:4000/api/auth/login", {
         email,
         password,
       });

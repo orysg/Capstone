@@ -8,7 +8,7 @@ const useRadarCount = () => {
   useEffect(() => {
     const fetchRadarCount = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/radars/count');
+        const response = await fetch('http://localhost:4000/api/radars/total');
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
