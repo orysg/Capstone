@@ -1,6 +1,7 @@
 name: front-guard-dev
 
 services:
+
   frontend:
     build:
       context: ./frontend
@@ -10,12 +11,9 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    # develop:
-    #   watch: 
-    #     - path: ./frontend/src
-    #       action: rebuild
     depends_on:
       - backend
+
   backend:
     build:
       context: ./backend
@@ -25,25 +23,18 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    # develop:
-    #   watch: 
-    #     - path: ./backend/src
-    #       action: rebuild
-    env_file:
-      - ./.env/.env.dev
     depends_on:
       - db
+
   db:
-    build:
-      context: ./db
-      target: dev
-    env_file:
-      - ./.env/.env.dev
+    image: postgres:16.4-alpine3.20
     ports:
       - "5432:5432"
+    env_file:
+      - ./.env/.env.dev
     volumes:
-      - ./db/data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
+
   mock_api:
     build:
       context: ./mock-radar
@@ -52,10 +43,10 @@ services:
     ports:
       - "5000:5000"
 
+
+
 # Add yarn install to dev build of frontend/backend to sync any dependancy changes
 
 # Use secrets instead of environment variables
-
-# Need radar service
 
 # command: sh -c "yarn install && cp yarn.lock /app && yarn start"
