@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -29,7 +29,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function DefaultSidebar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // Modal state
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -39,16 +40,21 @@ export default function DefaultSidebar() {
 
   const router = useRouter();
 
-  // Function to handle logout after confirmation
-  const handleLogoutConfirm = () => {
-    localStorage.removeItem('token'); // Clear any stored token
-    localStorage.removeItem('userRole'); // Clear the role
-    closeLogoutModal();
-    router.push("/signin"); // Redirect to signin page
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserRole = localStorage.getItem("userRole");
+      setUserRole(storedUserRole);
+    }
+  }, []);
 
-  // Fetch the user's role from localStorage
-  const userRole = localStorage.getItem("userRole"); // e.g., 'Admin' or 'Carer'
+  const handleLogoutConfirm = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
+    }
+    closeLogoutModal();
+    router.push("/signin");
+  };
 
   const adminNavList = (
     <>
@@ -177,9 +183,7 @@ export default function DefaultSidebar() {
       {/* Modal for logout confirmation */}
       <Dialog open={isLogoutModalOpen} handler={closeLogoutModal}>
         <DialogHeader>Confirm Logout</DialogHeader>
-        <DialogBody>
-          Are you sure you want to log out?
-        </DialogBody>
+        <DialogBody>Are you sure you want to log out?</DialogBody>
         <DialogFooter>
           <Button variant="text" color="gray" onClick={closeLogoutModal}>
             Cancel
