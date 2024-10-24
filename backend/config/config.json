@@ -1,0 +1,45 @@
+{
+    "development": {
+      "username": "myuser",
+      "password": "mysecret",
+      "database": "mydb",
+      "host": "db",
+      "port": 5432,
+      "dialect": "postgres",
+      "pool": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    },
+    "test": {
+      "username": "myuser",
+      "password": "mysecret",
+      "database": "mydb_test",
+      "host": "db",
+      "port": 5432,
+      "dialect": "postgres",
+      "pool": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    },
+    "production": {
+      "username": "myuser",
+      "password": "mysecret",
+      "database": "mydb",
+      "host": "db",
+      "port": 5432,
+      "dialect": "postgres",
+      "pool": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    }
+  }
+  

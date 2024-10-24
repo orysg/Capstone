@@ -1,1 +1,0 @@
-Could also use create_tables.sql
