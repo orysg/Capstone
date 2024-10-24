@@ -2,15 +2,11 @@
 import { ThemeProvider } from "@material-tailwind/react";
 import DefaultSidebar from "../components/Sidebar";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }) {
   return (
     <ThemeProvider>
       <div className="relative h-screen bg-gray-100">
-        <DefaultSidebar/>
+        <DefaultSidebar />
         <main className="p-4">{children}</main>
       </div>
     </ThemeProvider>

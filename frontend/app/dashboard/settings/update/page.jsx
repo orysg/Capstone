@@ -119,7 +119,7 @@ function Account1() {
                 <DayPicker
                   mode="single"
                   selected={date}
-                  onSelect={setDate as any}
+                  onSelect={setDate}
                   showOutsideDays
                   className="border-0"
                   classNames={{
