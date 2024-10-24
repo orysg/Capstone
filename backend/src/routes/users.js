@@ -48,6 +48,13 @@ router.post('/', async (req, res) => {  // Removed /users prefix
 router.put('/:id', async (req, res) => {  // Removed /users prefix
   const userId = req.params.id;
   const { email, firstName, lastName, userType } = req.body;
+  
+  console.log('Incoming request to update user:', { userId, email, firstName, lastName, userType });
+
+  if (!email || !firstName || !lastName || !userType) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  
   try {
     const result = await pool.query(
       'UPDATE Users SET Email = $1, FirstName = $2, LastName = $3, UserType = $4 WHERE UserID = $5 RETURNING *',
