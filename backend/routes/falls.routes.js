@@ -19,4 +19,7 @@ router.get('/:id', fallsController.getFallById);
 // Delete a Fall by ID
 router.delete('/:id', fallsController.deleteFall);
 
+// Get last fall for a radar
+// router.get('/:radarID/last-fall', fallsController.getLastFallForRadar);
+
 module.exports = router;
