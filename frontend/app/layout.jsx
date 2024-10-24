@@ -2,11 +2,7 @@
 import "./globals.css";
 import { ThemeProvider } from "@material-tailwind/react";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
