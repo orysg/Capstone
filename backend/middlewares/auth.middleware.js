@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(401).json({ error: 'Unauthorized: ' + token + authHeader });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     req.user = user;
@@ -24,7 +24,7 @@ const authenticateToken = (req, res, next) => {
 // Middleware to check if the user is an admin (Authorization)
 const authorizeAdmin = (req, res, next) => {
   if (req.user.userType !== 'Admin') {
-    return res.status(403).json({ message: 'Access denied. Admins only.' + req.user.userId + ' ' + req.user.userType });
+    return res.status(403).json({ message: 'Access denied. Admins only.'});
   }
   next();
 };
