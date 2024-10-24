@@ -11,8 +11,8 @@ const pool = new Pool({
   port: process.env.POSTGRES_PORT || 5432,
 });
 
-const MAX_RETRIES = 5;
-const RETRY_INTERVAL_MS = 2000;
+const MAX_RETRIES = 10;
+const RETRY_INTERVAL_MS = 5000;
 
 const ensureConnection = async (retries = MAX_RETRIES) => {
   try {

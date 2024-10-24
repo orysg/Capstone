@@ -46,7 +46,18 @@ CREATE TABLE Falls (
     ResponseStatus ResponseStatus DEFAULT 'Pending' NOT NULL
 );
 
+CREATE TABLE Invitations (
+    InvitationID SERIAL PRIMARY KEY,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    Token VARCHAR(255) UNIQUE NOT NULL,
+    Status VARCHAR(20) DEFAULT 'Pending' NOT NULL, -- Pending, Accepted, Expired
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ExpiresAt TIMESTAMP
+);
+
 -- Indexes to improve query performance
 CREATE INDEX idx_user_email ON Users(Email);
 CREATE INDEX idx_signin_userid ON SignIns(UserID);
 CREATE INDEX idx_falls_radarid ON Falls(RadarID);
+CREATE INDEX idx_invitations_email ON Invitations(Email);
+CREATE INDEX idx_signins_timestamp ON SignIns(Timestamp);
