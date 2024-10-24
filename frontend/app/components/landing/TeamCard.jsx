@@ -69,7 +69,7 @@ const members = [
     title: "Co-Founder",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar3.jpg`,
+    img: `/images/team/jazib.png`,
     name: "Jazib Azam",
     title: "Co-Founder",
   },
@@ -99,10 +99,18 @@ export function TeamSection12() {
             service and innovative solutions.
           </Typography>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {members.map((props, key) => (
+        <div className="grid grid-cols-3 gap-6">
+          {/* First row with 3 team cards */}
+          {members.slice(0, 3).map((props, key) => (
             <TeamCard key={key} {...props} />
           ))}
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+          {/* Second row with 2 team cards centered */}
+          {members.slice(3, 5).map((props, key) => (
+            <TeamCard key={key} {...props} />
+          ))}
+          {/* Empty cell for centering */}
         </div>
       </div>
     </section>
