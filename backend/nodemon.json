@@ -1,5 +1,0 @@
-{
-    "watch": ["app.js", "server.js", "routes/", "controllers/", "models", "routes/"],
-    "ext": "js,json",
-    "legacy-watch": true
-  }  
