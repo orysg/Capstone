@@ -13,7 +13,7 @@ function InviteCarer() {
 
     try {
       // Update the URL to match the correct route
-      const response = await axios.post("http://localhost:4000/api/signup-carer/invite-carer", { email });
+      const response = await axios.post("http://localhost:4000/api/invite-carer", { email });
       setMessage(response.data.message);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error sending invitation.");
