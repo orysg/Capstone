@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['www.material-tailwind.com'], // Allow external images from this domain
-      },
-      
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'www.material-tailwind.com',
+                pathname: '/**',
+            },
+        ],
+    },
 };
-
 
 export default nextConfig;
