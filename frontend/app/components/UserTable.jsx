@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { Dialog, DialogHeader, DialogBody, DialogFooter, Button } from "@material-tailwind/react";
 import {
   Typography,
   Card,
@@ -14,18 +15,22 @@ import axios from "axios"; // To handle API requests
 
 function UserTable() {
   const [users, setUsers] = useState([]);
+  const [editUser, setEditUser] = useState(null); // Holds the user being edited
+  const [showEditModal, setShowEditModal] = useState(false); // Toggles edit modal visibility
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Toggles delete modal visibility
+  const [deleteUserId, setDeleteUserId] = useState(null); // Holds user ID for deletion
+
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
-
   const totalPages = Math.ceil(users.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedUsers = users.slice(startIndex, startIndex + itemsPerPage);
 
+  // Fetch users on component load
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/users");
-        console.log("User data:", response.data);
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -34,69 +39,36 @@ function UserTable() {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (userId) => {
+  // Delete function
+  const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/users/${userId}`);
-      setUsers(users.filter((user) => user.UserID !== userId));
+      await axios.delete(`http://localhost:4000/api/users/${deleteUserId}`);
+      setUsers(users.filter((user) => user.userid !== deleteUserId));
+      setShowDeleteModal(false); // Close the delete modal after successful deletion
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  // Create TABLE_ROW by mapping through paginatedUsers
-  const TABLE_ROW = paginatedUsers.map((user, index) => {
-    const key = user.userid ? `user-${user.userid}` : `user-${index}`;  // Fallback to index if userid is undefined
-    const isLast = index === paginatedUsers.length - 1;
-    const classes = isLast ? "!p-4" : "!p-4 border-b border-gray-300";
-  
-    return (
-      <tr key={key}>
-        <td className={classes}>
-          <Typography
-            variant="small"
-            className="!font-normal text-gray-600 text-left md:text-center"
-          >
-            {user.userid || `No ID (${index})`} {/* Use lowercase userid */}
-          </Typography>
-        </td>
-        <td className={classes}>
-          <Typography
-            variant="small"
-            className="!font-normal text-gray-600 text-left md:text-center"
-          >
-            {user.firstname} {user.lastname} {/* Use lowercase firstname and lastname */}
-          </Typography>
-        </td>
-        <td className={classes}>
-          <Typography
-            variant="small"
-            className="!font-normal text-gray-600 text-left md:text-center"
-          >
-            {user.email} {/* Use lowercase email */}
-          </Typography>
-        </td>
-        <td className={`${classes} hidden md:table-cell`}>
-          <Typography
-            variant="small"
-            className="!font-normal text-gray-600 text-left md:text-center"
-          >
-            {user.usertype} {/* Use lowercase usertype */}
-          </Typography>
-        </td>
-        <td className={`${classes} hidden md:table-cell`}>
-          <div className="flex justify-center">
-            <IconButton variant="text" size="sm">
-              <PencilIcon className="h-5 w-5 text-gray-900" />
-            </IconButton>
-            <IconButton variant="text" size="sm" onClick={() => handleDelete(user.userid)}>
-              <TrashIcon className="h-5 w-5 text-gray-900" />
-            </IconButton>
-          </div>
-        </td>
-      </tr>
-    );
-  });
-  
+  // Edit function to open the modal
+  const handleEdit = (user) => {
+    setEditUser(user); // Set the current user to be edited
+    setShowEditModal(true); // Show the edit modal
+  };
+
+  // Save changes after editing
+  const handleSaveEdit = async () => {
+    try {
+      console.log('Saving user data:', editUser); 
+      const response = await axios.put(`http://localhost:4000/api/users/${editUser.userid}`, editUser);
+      setUsers(users.map((user) => (user.userid === editUser.userid ? response.data : user)));
+      setShowEditModal(false); // Hide the modal
+      setEditUser(null); // Clear the edit user state
+    } catch (error) {
+      console.error("Error saving edited user:", error);
+      console.log("Error details:", error.response?.data);
+    }
+  };
 
   return (
     <section className="px-4 py-6 sm:px-6 lg:px-8">
@@ -172,18 +144,103 @@ function UserTable() {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROW}
+              {paginatedUsers.map((user, index) => (
+                <tr key={user.userid || index}>
+                  <td className="!p-4 border-b border-gray-300">
+                    <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
+                      {user.userid || `No ID (${index})`}
+                    </Typography>
+                  </td>
+                  <td className="!p-4 border-b border-gray-300">
+                    <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
+                      {user.firstname} {user.lastname}
+                    </Typography>
+                  </td>
+                  <td className="!p-4 border-b border-gray-300">
+                    <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
+                      {user.email}
+                    </Typography>
+                  </td>
+                  <td className="!p-4 border-b border-gray-300 hidden md:table-cell">
+                    <Typography variant="small" className="!font-normal text-gray-600 text-left md:text-center">
+                      {user.usertype}
+                    </Typography>
+                  </td>
+                  <td className="!p-4 border-b border-gray-300 hidden md:table-cell">
+                    <div className="flex justify-center">
+                      <IconButton variant="text" size="sm" onClick={() => handleEdit(user)}>
+                        <PencilIcon className="h-5 w-5 text-gray-900" />
+                      </IconButton>
+                      <IconButton variant="text" size="sm" onClick={() => {
+                        setDeleteUserId(user.userid);
+                        setShowDeleteModal(true); // Show the delete confirmation modal
+                      }}>
+                        <TrashIcon className="h-5 w-5 text-gray-900" />
+                      </IconButton>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <div className="flex justify-center my-4">
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalPages={totalPages}
-            />
+            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
           </div>
         </CardBody>
       </Card>
+
+      {/* Edit User Modal */}
+      <Dialog open={showEditModal} handler={setShowEditModal}>
+        <DialogHeader>Edit User</DialogHeader>
+        <DialogBody divider>
+        <div className="flex flex-col gap-4">
+          <Input
+            label="First Name"
+            value={editUser?.firstname || ""}
+            onChange={(e) => setEditUser({ ...editUser, firstname: e.target.value })}
+          />
+          <Input
+            label="Last Name"
+            value={editUser?.lastname || ""}
+            onChange={(e) => setEditUser({ ...editUser, lastname: e.target.value })}
+          />
+          <Input
+            label="Email"
+            value={editUser?.email || ""}
+            onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+          />
+          <Input
+            label="Role"
+            value={editUser?.usertype || ""}
+            onChange={(e) => setEditUser({ ...editUser, usertype: e.target.value })}
+          />
+        </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="text" color="red" onClick={() => setShowEditModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="text" color="blue" onClick={handleSaveEdit}>
+            Save
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={showDeleteModal} handler={setShowDeleteModal}>
+        <DialogHeader>Confirm Deletion</DialogHeader>
+        <DialogBody divider>
+          Are you sure you want to delete this user?
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="text" color="blue" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="text" color="red" onClick={handleDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </section>
   );
 }
