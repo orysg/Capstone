@@ -45,7 +45,7 @@ const getUserById = async (req, res) => {
 // Delete a User
 const deleteUser = async (req, res) => {
   try {
-    const result = await User.destroy({ where: { id: req.params.id } });
+    const result = await User.destroy({ where: { UserID: req.params.id } });
     if (!result) return res.status(404).json({ message: 'User not found' });
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
