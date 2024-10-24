@@ -3,12 +3,13 @@ import React from "react";
 import { Button, Typography, Input } from "@material-tailwind/react";
 
 function HeroSection16() {
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpen(false)
-    );
-  }, []);
+  // Doesn't seem to do anything as there is no variable for setopen that is defined or referenced here
+  // React.useEffect(() => {
+  //   window.addEventListener(
+  //     "resize",
+  //     () => window.innerWidth >= 960 && setOpen(false)
+  //   );
+  // }, []);
 
   return (
     <>
