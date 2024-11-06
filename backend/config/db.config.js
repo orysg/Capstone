@@ -12,8 +12,21 @@ const sequelize = new Sequelize(
     host: dbConfig.host,
     port: dbConfig.port,
     dialect: dbConfig.dialect,
-    pool: dbConfig.pool
+    pool: dbConfig.pool,
+    retry: {
+      max: 5,
+      match: [
+        Sequelize.ConnectionError,
+        Sequelize.ConnectionRefusedError,
+        Sequelize.ConnectionTimedOutError,
+        Sequelize.TimeoutError,
+      ],
+    },
   }
 );
+
+sequelize.authenticate().catch(error => {
+  console.error('Unable to connect to the database:', error);
+});
 
 module.exports = sequelize;
