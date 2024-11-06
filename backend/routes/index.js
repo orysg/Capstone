@@ -10,7 +10,7 @@ const usersRoutes = require('./users.routes');
 
 // Mount the routes
 router.use('/auth', authRoutes);
-router.use('/authAttempts', authAttemptsRoutes);
+router.use('/auth-attempts', authAttemptsRoutes);
 router.use('/falls', fallsRoutes);
 router.use('/invitations', invitationsRoutes);
 router.use('/radars', radarsRoutes);
